@@ -18,11 +18,17 @@ namespace signal_generation {
     //uint8_t data[6] = {0xD2, 0x2B, 0b10010000, 0x00, 0x00, 0x00};
     uint8_t data[6] = {0b0010'1110, 0b1001'0000, 0x00, 0x00, 0x00, 0x00};
 
+    int nextDataLenght = 0;
+    uint8_t nextData[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    bool nextDataIsReady = false;
+    bool nextDataIsUsed = false;
+
     uint8_t checksum = data[0] ^ data[1];
 
     void dcc_signal_callback();
     void turn_on();
     void turn_off();
+    void getNextPacket();
 
     void setup() {
         hardware_interface::set_up_hardware(dcc_signal_callback);
@@ -79,6 +85,7 @@ namespace signal_generation {
             state = 0;
             currentBit = 1;
             turn_on();
+            getNextPacket();
         }
     }
 
@@ -96,5 +103,29 @@ namespace signal_generation {
     void turn_off() {
         hardware_interface::direction_b_off();
         isFirstHalf = false;
+    }
+
+    void getNextPacket() {
+        //TODO: If I start using multi-core MCUs I might need something bigger here
+        noInterrupts();
+        if (!nextDataIsUsed && nextDataIsReady) {
+            nextDataIsUsed = true;
+            memcpy(data, nextData, 6);
+            dataBytes = nextDataLenght;
+            checksum = data[0];
+            for (int i = 1; i < dataBytes; i++) {
+                checksum ^= data[i];
+            }
+            nextDataIsReady = false;
+            nextDataIsUsed = false;
+        }
+        else {
+            //data[0] = 0b1111'1111;
+            //data[1] = 0b0000'0000;
+            //checksum = 0b1111'1111;
+            //dataBytes = 2;
+        }
+
+        interrupts();
     }
 };
