@@ -30,14 +30,19 @@ namespace net {
         BLE.begin();
         BLE.setLocalName("DC3S-BT");
 
-        main::version.setValue(reinterpret_cast<const uint8_t*>(version::value), sizeof(version::value));
-        main::hash.setValue(reinterpret_cast<const uint8_t*>(version::hash), sizeof(version::hash));
+        main::version.writeValue(reinterpret_cast<const uint8_t*>(version::value), sizeof(version::value));
+        main::hash.writeValue(reinterpret_cast<const uint8_t*>(version::hash), sizeof(version::hash));
         main::service.addCharacteristic(main::version);
         main::service.addCharacteristic(main::hash);
         BLE.addService(main::service);
 
+        // Locomotive service
+
+        locomotive::speed128.writeValue(SpeedCommand128(), sizeof(SpeedCommand128));
         locomotive::speed128.setEventHandler(BLEWritten, handleSpeed128Command);
         locomotive::service.addCharacteristic(locomotive::speed128);
+
+        locomotive::function.writeValue(FunctionCommand(), sizeof(FunctionCommand));
         locomotive::function.setEventHandler(BLEWritten, handleFunctionCommand);
         locomotive::service.addCharacteristic(locomotive::function);
         BLE.addService(locomotive::service);
