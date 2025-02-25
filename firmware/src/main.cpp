@@ -2,6 +2,7 @@
 #include <ArduinoBLE.h>
 #include "signal_generation/signal_generation.hpp"
 #include "net/net.hpp"
+#include "state_manager.hpp"
 
 void setup() {
   Serial.begin(921600);
@@ -21,5 +22,6 @@ void loop() {
   }
 
   net::process();
+  state_manager::process();
   
 }

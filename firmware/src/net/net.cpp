@@ -4,6 +4,7 @@
 #include "../version.hpp"
 #include "signal_generation/signal_generation.hpp"
 #include "types.hpp"
+#include <state_manager.hpp>
 
 namespace net {
     void handleSpeed128Command (BLEDevice central, BLECharacteristic characteristic);
@@ -79,24 +80,11 @@ namespace net {
     }
 
     void handleFunctionCommand (BLEDevice central, BLECharacteristic characteristic) {
-        Serial.println("Speed128 command received");
+        Serial.println("Function command received");
         if (characteristic.written()) {
             FunctionCommand command;
             memcpy(&command, characteristic.value(), sizeof(FunctionCommand));
-            
-            noInterrupts();
-            if (!signal_generation::nextDataIsUsed) {
-                signal_generation::nextDataIsUsed = true;
-                interrupts();
-                signal_generation::nextData[0] = (uint8_t)command.engine;
-                signal_generation::nextData[1] = 0b1000'0000 | command.state << 4;
-                signal_generation::nextDataLenght = 2;
-                signal_generation::nextDataIsReady = true;
-                signal_generation::nextDataIsUsed = false;
-            }
-            else {
-                interrupts();
-            }
+            state_manager::setFunction(command.engine, command.function, command.state);
         }
     }
 }

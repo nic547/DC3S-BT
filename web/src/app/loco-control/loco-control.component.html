@@ -2,5 +2,7 @@
 <div>
     <p>Address: <input [(ngModel)]="locoAddress" type="number"/></p>
 </div>
-<button (click)="dccFunction(true)">On</button>
-<button (click)="dccFunction(false)">Off</button>
+
+<p *ngFor="let f of functions">
+    <button (click)="toggleFunction(f.fnNumber)">{{f.displayName}}</button>
+</p>
