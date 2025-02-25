@@ -14,7 +14,8 @@ export class LocoControlComponent implements OnInit {
   private ble = inject(BLEService);
 
   protected locoAddress = 3;
-  
+  protected speed = 0;
+  protected forward = true;
   protected functions: dccFunction[] = [];
 
   public ngOnInit() {
@@ -26,6 +27,18 @@ export class LocoControlComponent implements OnInit {
   async toggleFunction(number: number) {
     await this.ble.setFunction(this.locoAddress, number, !this.functions[number].active);
     this.functions[number].active = !this.functions[number].active;
+  }
+
+  async setDirection(forward: boolean) {
+    this.speed = 0;
+    this.forward = forward;
+    await this.ble.setSpeed128(this.locoAddress, this.speed, forward);
+    console.log("setDirection",this.speed, this.forward);
+  }
+
+  async setSpeed() {
+    await this.ble.setSpeed128(this.locoAddress, this.speed, this.forward);
+    console.log("setSpeed", this.speed, this.forward);
   }
 }
 

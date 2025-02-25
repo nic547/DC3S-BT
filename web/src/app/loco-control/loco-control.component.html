@@ -3,6 +3,10 @@
     <p>Address: <input [(ngModel)]="locoAddress" type="number"/></p>
 </div>
 
+<input type="number" max="126" min="0" step="1" [(ngModel)]="speed" (change)="setSpeed()"/>
+<button (click)="setDirection(false)" >&lt</button>
+<button (click)="setDirection(true)" >&gt</button>
+
 <p *ngFor="let f of functions">
     <button (click)="toggleFunction(f.fnNumber)">{{f.displayName}}</button>
 </p>

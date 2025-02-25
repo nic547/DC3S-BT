@@ -61,21 +61,7 @@ namespace net {
         if (characteristic.written()) {
             SpeedCommand128 command;
             memcpy(&command, characteristic.value(), sizeof(SpeedCommand128));
-            
-            noInterrupts();
-            if (!signal_generation::nextDataIsUsed) {
-                signal_generation::nextDataIsUsed = true;
-                interrupts();
-                signal_generation::nextData[0] = (uint8_t)command.engine;
-                signal_generation::nextData[1] = 0b0011'1111;
-                signal_generation::nextData[2] = command.speed | (command.direction << 7);
-                signal_generation::nextDataLenght = 3;
-                signal_generation::nextDataIsReady = true;
-                signal_generation::nextDataIsUsed = false;
-            }
-            else {
-                interrupts();
-            }
+            state_manager::setSpeed(command.engine, command.speed, command.direction);
         }
     }
 
