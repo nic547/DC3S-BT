@@ -9,6 +9,7 @@ export class BLEService {
 
   constructor() { }
 
+  isLoading = signal(false);
   isReady = signal(false);
 
   private functionCommand: BluetoothRemoteGATTCharacteristic | null = null;
@@ -20,6 +21,9 @@ export class BLEService {
       filters: [{ services: ['789624c2-214b-4730-b53d-fe5aa3143250'] }],
       optionalServices: ['6d3fe63e-4083-483a-ab0c-36113ecb859f']
     };
+
+    this.isLoading.set(true);
+
     let device = await navigator.bluetooth.requestDevice(resuestOptions);
     let server = await device.gatt?.connect();
 
@@ -29,6 +33,7 @@ export class BLEService {
     await this.loadCharacteristics(server);
 
     this.isReady.set(true);
+    this.isLoading.set(false);
   }
 
   async setFunction(address: number, number: number, state: boolean) {

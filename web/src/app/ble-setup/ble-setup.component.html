@@ -1,3 +1,14 @@
-<p>This application uses WebBluetooth to connect to a Arduino running the D3CS-BT Software</p>
-<p> TODO: Something about compatibility</p>
-<button (click)="connect()">Connect</button>
+<main class="responsive">
+    <h2>Connect to your Command Station</h2>
+
+    <p> This application is part of the <a class="link" href="https://github.com/nic547/DC3S-BT">DC3S-BT project</a>, a open-source DCC command station using "Bluetooth Low Energy"-compatible devices.</p>
+
+    <p>This web application uses a technology called "Web Bluetooth" to connect to a Microcontoller Board running the DC3S-BT firmware.
+        Unfortunately, this technology is not supported by all browsers and operating systems. You generally need to use a chromium-based browser (like Chrome or Edge).
+        This unfortunatly excludes iOS devices (On iOS, other Browsers are merley a coat of paint on top of Safari, which does not support Web Bluetooth).
+        See <a class="link" href="https://caniuse.com/web-bluetooth">CanIUse</a> for a detailed overview of supported devices and browsers.
+    </p>
+
+<button (click)="connect()" [disabled]="bleService.isLoading()">Connect</button>
+<progress *ngIf="bleService.isLoading()" class="circle"></progress>
+</main>
