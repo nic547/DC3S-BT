@@ -1,11 +1,22 @@
-<div>
-    <p>Address: <input [(ngModel)]="locoAddress" type="number"/></p>
+<div id="loco-grid">
+  <div class="field label border" id="address">
+    <input [(ngModel)]="locoAddress" type="number" placeholder=" " />
+    <label>DCC Address</label>
+  </div>
+
+  <article id="speed" class="round">
+    <label class="slider max vertical">
+      <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="speed" (input)="setSpeed()"/>
+      <span></span>
+    </label>
+  </article>
+  <span id="speed-display">{{speed}}</span>
+  <button id="backwards" (click)="setDirection(false)">&lt;</button>
+  <button id="forwards" (click)="setDirection(true)">&gt;</button>
+  <button id="emergency" disabled="true">E-Stop</button>
+
+  <div id="functions" class="scroll">
+    <button *ngFor="let f of functions" (click)="toggleFunction(f.fnNumber)" class="small"
+      [class.border]="!f.active">{{f.displayName}}</button>
+  </div>
 </div>
-
-<input type="number" max="126" min="0" step="1" [(ngModel)]="speed" (change)="setSpeed()"/>
-<button (click)="setDirection(false)" >&lt</button>
-<button (click)="setDirection(true)" >&gt</button>
-
-<p *ngFor="let f of functions">
-    <button (click)="toggleFunction(f.fnNumber)">{{f.displayName}}</button>
-</p>

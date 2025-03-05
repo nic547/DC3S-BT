@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { BLEService } from '../ble.service';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
@@ -10,6 +10,7 @@ import { NgFor } from '@angular/common';
   styleUrl: './loco-control.component.css'
 })
 export class LocoControlComponent implements OnInit {
+
 
   private ble = inject(BLEService);
 
@@ -31,15 +32,22 @@ export class LocoControlComponent implements OnInit {
 
   async setDirection(forward: boolean) {
     this.speed = 0;
+    // Bit of a hack to get the slider to update
+    (document.getElementById("speedSlider") as HTMLInputElement).value = "0";
+    await ui();
+
     this.forward = forward;
     await this.ble.setSpeed128(this.locoAddress, this.speed, forward);
     console.log("setDirection",this.speed, this.forward);
+    
+    
   }
 
   async setSpeed() {
     await this.ble.setSpeed128(this.locoAddress, this.speed, this.forward);
     console.log("setSpeed", this.speed, this.forward);
   }
+
 }
 
 class dccFunction {

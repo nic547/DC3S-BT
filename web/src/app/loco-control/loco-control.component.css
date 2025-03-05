@@ -1,0 +1,62 @@
+#functions > button {
+    margin: 0px;
+}
+
+#functions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: start;
+    gap: 2px;
+}
+
+#loco-grid{
+    display: grid;
+    grid-template-areas:    "name name name"
+                            "speed speed functions"
+                            "backwards forwards functions"
+                            "emergency emergency functions";
+
+    grid-template-columns: 1fr 1fr 10fr;
+    grid-template-rows:    auto 1fr auto auto;
+    height: calc(100vh - 2 * 8px);
+    margin: 8px;
+    gap: 4px;
+}
+
+#functions{
+    grid-area: functions;
+}
+
+#address{
+    grid-area: name;
+    margin-bottom: 16px; /* default is even larger - revist later*/
+}
+
+#speed{
+    grid-area: speed;
+    margin: 0px 8px 8px 8px;
+}
+
+#speed-display{
+    grid-area: speed;
+    margin: 16px;
+    text-align: center;
+    align-content: center;
+    z-index: 10;
+    pointer-events: none;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--on-background);
+}
+
+#forwards{
+    grid-area: forwards;
+}
+
+#backwards{
+    grid-area: backwards;
+}
+
+#emergency{
+    grid-area: emergency;
+}
