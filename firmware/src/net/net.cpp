@@ -30,6 +30,8 @@ namespace net {
     void init() {
         BLE.begin();
         BLE.setLocalName("DC3S-BT");
+        BLE.setDeviceName("DC3S-BT");
+        BLE.setConnectionInterval(0x0006, 0x0006); // that should equal 7.5ms, the minimal value - it seems to improve the latency, not what the default behavior is...
 
         main::version.writeValue(reinterpret_cast<const uint8_t*>(version::value), sizeof(version::value));
         main::hash.writeValue(reinterpret_cast<const uint8_t*>(version::hash), sizeof(version::hash));
