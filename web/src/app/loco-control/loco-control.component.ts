@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { BLEService } from '../ble.service';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
+import BLEServiceToken from '../services/ble-service/ble.interface';
 
 @Component({
   selector: 'app-loco-control',
@@ -12,7 +12,7 @@ import { NgFor } from '@angular/common';
 export class LocoControlComponent implements OnInit {
 
 
-  private ble = inject(BLEService);
+  private ble = inject(BLEServiceToken);
 
   protected locoAddress = 3;
   protected speed = 0;

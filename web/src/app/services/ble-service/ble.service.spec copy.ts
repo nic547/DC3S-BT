@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BLEService } from './ble.service';
+import { BleFakeService } from './ble-fake.service';
 
 describe('BLEService', () => {
-  let service: BLEService;
+  let service: BleFakeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BLEService);
+    service = TestBed.inject(BleFakeService);
   });
 
   it('should be created', () => {

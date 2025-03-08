@@ -1,11 +1,12 @@
 /// <reference types="web-bluetooth" />
 
 import { Injectable, WritableSignal, signal } from '@angular/core';
+import { IBLEService as IBLEService } from './ble.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BLEService {
+export class BLEService implements IBLEService {
 
   constructor() {
     if (!navigator.bluetooth) {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { BLEService } from '../ble.service';
 import { inject } from '@angular/core';
 import { NgIf } from '@angular/common';
+import BLEServiceToken from '../services/ble-service/ble.interface';
 
 @Component({
   selector: 'app-ble-setup',
@@ -11,7 +11,7 @@ import { NgIf } from '@angular/common';
 })
 export class BLESetupComponent {
 
-  protected bleService = inject(BLEService);
+  protected bleService = inject(BLEServiceToken);
 
   async connect() {
     await this.bleService.setup();
