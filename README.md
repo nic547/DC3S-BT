@@ -7,7 +7,7 @@ It's targeting Arduino boards with a Bluetooth module, like the Arduino Uno R4 W
 
 It's not intended to be a one-size-fits-all solution, rather focusing on the Bluetooth aspect.
 Support for DC via Zero-Stretching, RailCom, feedback and other features are not planned.
-If you need a more complete solution or one that doesn't rely on Bluetooth, I can wholeheartedly recommend the [DCC-EX](https://dcc-ex.com/)[(Github)](https://github.com/DCC-EX/CommandStation-EX) project.
+If you need a more complete solution or one that doesn't rely on Bluetooth, I can wholeheartedly recommend the [DCC-EX](https://dcc-ex.com/) [(Github)](https://github.com/DCC-EX/CommandStation-EX) project.
 
 ## Plans
 
