@@ -1,0 +1,8 @@
+<div id="engine-container">
+    <app-loco-control
+    *ngFor="let engine of stateService.activeEngines()"
+    [engine]="engine"></app-loco-control>
+    <div>
+        <button (click)="addSimpleEngine()">Add Engine</button>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 <div id="loco-grid">
   <div class="field label border" id="address">
-    <input [(ngModel)]="locoAddress" type="number" placeholder=" " />
+    <input [(ngModel)]="engine().address" type="number" placeholder=" " />
     <label>DCC Address</label>
   </div>
 
@@ -16,7 +16,7 @@
   <button id="emergency" disabled="true">E-Stop</button>
 
   <div id="functions" class="scroll">
-    <button *ngFor="let f of functions" (click)="toggleFunction(f.fnNumber)" class="small"
-      [class.border]="!f.active">{{f.displayName}}</button>
+    <button *ngFor="let f of engine().functions" (click)="toggleFunction(f.number)" class="small"
+      [class.border]="!f.isActive">{{f.displayName}}</button>
   </div>
 </div>
