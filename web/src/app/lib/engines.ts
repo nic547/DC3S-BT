@@ -3,6 +3,8 @@ import { flush } from "@angular/core/testing";
 export abstract class Engine {
     address: number = 3;
     functions: DccFunction[] = [];
+    isForwards: boolean = true;
+    speed: number = 0;
 }
 
 export class SimpleEngine extends Engine {

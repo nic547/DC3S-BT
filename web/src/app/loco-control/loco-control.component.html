@@ -6,11 +6,11 @@
 
   <article id="speed" class="round">
     <label class="slider max vertical">
-      <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="speed" (input)="setSpeed()"/>
+      <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed" (input)="setSpeed()"/>
       <span></span>
     </label>
   </article>
-  <span id="speed-display">{{speed}}</span>
+  <span id="speed-display">{{engine().speed}}</span>
   <button id="backwards" (click)="setDirection(false)">&lt;</button>
   <button id="forwards" (click)="setDirection(true)">&gt;</button>
   <button id="emergency" disabled="true">E-Stop</button>
