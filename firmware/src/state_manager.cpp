@@ -2,9 +2,6 @@
 #include "signal_generation/signal_generation.hpp"
 
 namespace state_manager {
-
-uint8_t extractF0_4(uint8_t f0_4);
-
 struct locomotive {
   uint16_t address : 14;
   uint8_t speed : 5;
@@ -26,7 +23,23 @@ struct locomotive {
   int reminderCycle;
 };
 
-locomotive locos;
+uint8_t extractF0_4(uint8_t f0_4);
+locomotive *GetEngineSlot(uint16_t address);
+void generateSpeedCommand(locomotive &engine);
+void checkForChanges(state_manager::locomotive &loco, bool &retFlag);
+
+void generateFunction21_28Command(state_manager::locomotive &loco);
+
+void generateFunction13_20Command(state_manager::locomotive &loco);
+
+void generateFunction9_12Command(state_manager::locomotive &loco);
+
+void generateFunctions5_8Command(state_manager::locomotive &loco);
+
+void generateFunctions0_4Command(state_manager::locomotive &loco);
+
+locomotive locos[50];
+int lastSelectedEngine = 0;
 
 void process() {
 
@@ -37,115 +50,194 @@ void process() {
   }
   interrupts();
 
-  if (locos.targetSpeed != locos.speed || locos.targetDirection != locos.direction) {
-    signal_generation::nextData[0] = locos.address;
-    signal_generation::nextData[1] = 0b0011'1111;
-    signal_generation::nextData[2] = locos.targetSpeed | (locos.targetDirection << 7);
-    signal_generation::nextDataLenght = 3;
-    signal_generation::nextDataIsReady = true;
+  for (int i = 0; i < 50; i++) {
+    // We don't want to process the whole array from the beginning every time to try and evenly distribute the "bandwidth"
+    // We therefore keep track of the last engine processed and start from the next slot
+    int j = (i + lastSelectedEngine + 1) % 50;
+    auto &loco = locos[j];
 
-    locos.speed = locos.targetSpeed;
-    locos.direction = locos.targetDirection;
-    return;
+    // A slot with address 0 (Broadcast) is considered empty
+    if (loco.address == 0) {
+      continue;
+    }
+    bool hasFoundChange;
+    checkForChanges(loco, hasFoundChange);
+    if (hasFoundChange) {
+      return;
+    }
   }
 
-  if (locos.targetFunction0_4 != locos.function0_4) {
-    signal_generation::nextData[0] = locos.address;
-    signal_generation::nextData[1] = 0b1000'0000 | extractF0_4(locos.targetFunction0_4);
-    signal_generation::nextDataLenght = 2;
-    signal_generation::nextDataIsReady = true;
+  // If we get here there we no changes - instead we send a reminder packet
 
-    locos.function0_4 = locos.targetFunction0_4;
-    return;
-  }
+  for (int i = 0; i < 50; i++) {
+    // We don't want to process the whole array from the beginning every time to try and evenly distribute the "bandwidth"
+    // We therefore keep track of the last engine processed and start from the next slot
+    int j = (i + lastSelectedEngine + 1) % 50;
+    auto &loco = locos[j];
 
-  if (locos.targetFunction5_8 != locos.function5_8) {
-    signal_generation::nextData[0] = locos.address;
-    signal_generation::nextData[1] = 0b1011'0000 | locos.targetFunction5_8;
-    signal_generation::nextDataLenght = 2;
-    signal_generation::nextDataIsReady = true;
+    // A slot with address 0 (Broadcast) is considered empty
+    if (loco.address == 0) {
+      continue;
+    }
 
-    locos.function5_8 = locos.targetFunction5_8;
-    return;
-  }
-
-  if (locos.targetFunction9_12 != locos.function9_12) {
-    signal_generation::nextData[0] = locos.address;
-    signal_generation::nextData[1] = 0b1010'0000 | locos.targetFunction9_12;
-    signal_generation::nextDataLenght = 2;
-    signal_generation::nextDataIsReady = true;
-
-    locos.function9_12 = locos.targetFunction9_12;
-    return;
-  }
-
-  if (locos.targetFunction13_20 != locos.function13_20) {
-    signal_generation::nextData[0] = locos.address;
-    signal_generation::nextData[1] = 0b1101'1110;
-    signal_generation::nextData[2] = locos.targetFunction13_20;
-    signal_generation::nextDataLenght = 3;
-    signal_generation::nextDataIsReady = true;
-
-    locos.function13_20 = locos.targetFunction13_20;
-    return;
-  }
-
-  if (locos.targetFunction21_28 != locos.function21_28) {
-    signal_generation::nextData[0] = locos.address;
-    signal_generation::nextData[1] = 0b1101'1111;
-    signal_generation::nextData[2] = locos.targetFunction21_28;
-    signal_generation::nextDataLenght = 3;
-    signal_generation::nextDataIsReady = true;
-
-    locos.function21_28 = locos.targetFunction21_28;
+    switch (loco.reminderCycle) {
+    case 0:
+      generateSpeedCommand(loco);
+      break;
+    case 1:
+      generateFunctions0_4Command(loco);
+      break;
+    case 2:
+      generateFunctions5_8Command(loco);
+      break;
+    case 3:
+      generateSpeedCommand(loco);
+      break;
+    case 4:
+      generateFunction9_12Command(loco);
+      break;
+    case 5:
+      generateFunction13_20Command(loco);
+      break;
+    case 6:
+      generateSpeedCommand(loco);
+      break;
+    case 7:
+      generateFunction21_28Command(loco);
+      loco.reminderCycle = -1;
+      break;
+    }
+    loco.reminderCycle++;
     return;
   }
 }
 
+void checkForChanges(state_manager::locomotive &loco, bool &hasFoundChanges) {
+  hasFoundChanges = true;
+  if (loco.targetSpeed != loco.speed || loco.targetDirection != loco.direction) {
+    generateSpeedCommand(loco);
+    return;
+  }
+  if (loco.targetFunction0_4 != loco.function0_4) {
+    generateFunctions0_4Command(loco);
+    return;
+  }
+
+  if (loco.targetFunction5_8 != loco.function5_8) {
+    generateFunctions5_8Command(loco);
+    return;
+  }
+
+  if (loco.targetFunction9_12 != loco.function9_12) {
+    generateFunction9_12Command(loco);
+    return;
+  }
+
+  if (loco.targetFunction13_20 != loco.function13_20) {
+    generateFunction13_20Command(loco);
+    return;
+  }
+
+  if (loco.targetFunction21_28 != loco.function21_28) {
+    generateFunction21_28Command(loco);
+    return;
+  }
+  hasFoundChanges = false;
+}
+
+void generateFunction21_28Command(state_manager::locomotive &loco) {
+  signal_generation::nextData[0] = loco.address;
+  signal_generation::nextData[1] = 0b1101'1111;
+  signal_generation::nextData[2] = loco.targetFunction21_28;
+  signal_generation::nextDataLenght = 3;
+  signal_generation::nextDataIsReady = true;
+
+  loco.function21_28 = loco.targetFunction21_28;
+}
+
+void generateFunction13_20Command(state_manager::locomotive &loco) {
+  signal_generation::nextData[0] = loco.address;
+  signal_generation::nextData[1] = 0b1101'1110;
+  signal_generation::nextData[2] = loco.targetFunction13_20;
+  signal_generation::nextDataLenght = 3;
+  signal_generation::nextDataIsReady = true;
+
+  loco.function13_20 = loco.targetFunction13_20;
+}
+
+void generateFunction9_12Command(state_manager::locomotive &loco) {
+
+  signal_generation::nextData[0] = loco.address;
+  signal_generation::nextData[1] = 0b1010'0000 | loco.targetFunction9_12;
+  signal_generation::nextDataLenght = 2;
+  signal_generation::nextDataIsReady = true;
+
+  loco.function9_12 = loco.targetFunction9_12;
+}
+
+void generateFunctions5_8Command(state_manager::locomotive &loco) {
+  signal_generation::nextData[0] = loco.address;
+  signal_generation::nextData[1] = 0b1011'0000 | loco.targetFunction5_8;
+  signal_generation::nextDataLenght = 2;
+  signal_generation::nextDataIsReady = true;
+
+  loco.function5_8 = loco.targetFunction5_8;
+}
+
+void generateFunctions0_4Command(state_manager::locomotive &loco) {
+  signal_generation::nextData[0] = loco.address;
+  signal_generation::nextData[1] = 0b1000'0000 | extractF0_4(loco.targetFunction0_4);
+  signal_generation::nextDataLenght = 2;
+  signal_generation::nextDataIsReady = true;
+
+  loco.function0_4 = loco.targetFunction0_4;
+}
+
 void setFunction(uint16_t address, uint8_t number, bool on) {
-  locos.address = address;
+  auto engine = GetEngineSlot(address);
+  engine->address = address;
 
   if (number <= 4) {
     if (on) {
-      locos.targetFunction0_4 |= 1 << number;
+      engine->targetFunction0_4 |= 1 << number;
     } else {
-      locos.targetFunction0_4 &= ~(1 << number);
+      engine->targetFunction0_4 &= ~(1 << number);
     }
     return;
   }
 
   if (number <= 8) {
     if (on) {
-      locos.targetFunction5_8 |= 1 << (number - 5);
+      engine->targetFunction5_8 |= 1 << (number - 5);
     } else {
-      locos.targetFunction5_8 &= ~(1 << (number - 5));
+      engine->targetFunction5_8 &= ~(1 << (number - 5));
     }
     return;
   }
 
   if (number <= 12) {
     if (on) {
-      locos.targetFunction9_12 |= 1 << (number - 9);
+      engine->targetFunction9_12 |= 1 << (number - 9);
     } else {
-      locos.targetFunction9_12 &= ~(1 << (number - 9));
+      engine->targetFunction9_12 &= ~(1 << (number - 9));
     }
     return;
   }
 
   if (number <= 20) {
     if (on) {
-      locos.targetFunction13_20 |= 1 << (number - 13);
+      engine->targetFunction13_20 |= 1 << (number - 13);
     } else {
-      locos.targetFunction13_20 &= ~(1 << (number - 13));
+      engine->targetFunction13_20 &= ~(1 << (number - 13));
     }
     return;
   }
 
   if (number <= 28) {
     if (on) {
-      locos.targetFunction21_28 |= 1 << (number - 21);
+      engine->targetFunction21_28 |= 1 << (number - 21);
     } else {
-      locos.targetFunction21_28 &= ~(1 << (number - 21));
+      engine->targetFunction21_28 &= ~(1 << (number - 21));
     }
     return;
   }
@@ -153,12 +245,25 @@ void setFunction(uint16_t address, uint8_t number, bool on) {
 
 void setSpeed(uint16_t address, uint8_t speed, bool forwards) {
 
-    if (speed > 0) {
-        speed++; //1 would be emergency stop, not an actual speed.
-    }
-  locos.address = address;
-  locos.targetSpeed = speed;
-  locos.targetDirection = forwards;
+  auto engine = GetEngineSlot(address);
+  if (speed > 0) {
+    speed++; // 1 would be emergency stop, not an actual speed.
+  }
+  engine->address = address;
+  engine->targetSpeed = speed;
+  engine->targetDirection = forwards;
+}
+
+void generateSpeedCommand(locomotive &loco) {
+  signal_generation::nextData[0] = loco.address;
+  signal_generation::nextData[1] = 0b0011'1111;
+  signal_generation::nextData[2] = loco.targetSpeed | (loco.targetDirection << 7);
+  signal_generation::nextDataLenght = 3;
+  signal_generation::nextDataIsReady = true;
+
+  loco.speed = loco.targetSpeed;
+  loco.direction = loco.targetDirection;
+  return;
 }
 
 uint8_t extractF0_4(uint8_t f0_4) {
@@ -166,4 +271,9 @@ uint8_t extractF0_4(uint8_t f0_4) {
   uint8_t f1_4 = f0_4 >> 1;
   return (f0 | f1_4);
 }
+
+locomotive *GetEngineSlot(uint16_t address) {
+  // TODO: Actually do manage the slots
+  return &locos[address % 50];
 }
+} // namespace state_manager

@@ -120,10 +120,10 @@ namespace signal_generation {
             nextDataIsUsed = false;
         }
         else {
-            //data[0] = 0b1111'1111;
-            //data[1] = 0b0000'0000;
-            //checksum = 0b1111'1111;
-            //dataBytes = 2;
+            data[0] = 0b1111'1111;
+            data[1] = 0b0000'0000;
+            checksum = 0b1111'1111;
+            dataBytes = 2;
         }
 
         interrupts();
