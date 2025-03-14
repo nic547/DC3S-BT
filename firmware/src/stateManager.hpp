@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include <signal_generation/signal_generation.hpp>
+#include <signalGeneration/signalGeneration.hpp>
 
 namespace state_manager {
 void process();

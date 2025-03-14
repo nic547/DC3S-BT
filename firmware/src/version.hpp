@@ -17,6 +17,6 @@
 #endif
 
 namespace version {
-    constexpr int value[3] = {VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH};
-    constexpr const char* hash = VERSION_HASH;
-}
+constexpr int value[3] = {VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH};
+constexpr const char *hash = VERSION_HASH;
+} // namespace version
