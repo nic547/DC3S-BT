@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LocoControlComponent } from '../loco-control/loco-control.component';
 import { StateService } from '../services/state-service/state.service';
 import { DccFunction, SimpleEngine } from '../lib/engines';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
+import { EngineSelectionComponent } from '../engine-selection/engine-selection.component';
+import { EngineEditorComponent } from "../engine-editor/engine-editor.component";
 
 @Component({
   selector: 'app-loco-container',
-  imports: [LocoControlComponent, NgFor],
+  imports: [LocoControlComponent, NgFor, NgIf, EngineSelectionComponent, EngineEditorComponent],
   templateUrl: './loco-container.component.html',
   styleUrl: './loco-container.component.css'
 })
@@ -14,11 +16,17 @@ export class LocoContainerComponent {
 
   protected stateService = inject(StateService);
 
+  protected showSelection = signal(false);
+
   async addSimpleEngine() {
     let engine = new SimpleEngine();
     for (let i = 0; i <= 28; i++) {
       engine.functions.push(DccFunction.create(i));
     }
     await this.stateService.activateEngine(engine);
+  }
+
+  async selectEngine() {
+    this.showSelection.set(true);
   }
 }

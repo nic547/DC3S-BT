@@ -1,8 +1,13 @@
+<app-engine-selection *ngIf="showSelection()" [(showSelection)]="showSelection"></app-engine-selection>
+<app-engine-editor *ngIf="stateService.editingEngine() != null"></app-engine-editor>
+
 <div id="engine-container">
     <app-loco-control
     *ngFor="let engine of stateService.activeEngines()"
     [engine]="engine"></app-loco-control>
     <div>
+        <button (click)="selectEngine()">Select Engine</button>
         <button (click)="addSimpleEngine()">Add Engine</button>
     </div>
 </div>
+

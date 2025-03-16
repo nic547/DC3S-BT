@@ -1,0 +1,12 @@
+<dialog class="max active">
+    <h5>Select Engine</h5>
+    <div>
+      <div *ngFor="let engine of engines" class="grid">
+        <button (click)="select(engine)">{{engine.name}}</button>
+      </div>
+    </div>
+    <nav class="right-align">
+      <button class="border" (click)="close()">Cancel</button>
+      <button (click)="createNewPersistentEngine()">Create New</button>
+    </nav>
+</dialog>

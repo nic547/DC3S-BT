@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BLESetupComponent } from './ble-setup/ble-setup.component';
 import BLEServiceToken, { IBLEService } from './services/ble-service/ble.interface';
@@ -6,6 +6,7 @@ import { inject } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { BLEServiceFactory } from './services/ble-service/ble.service.factory';
 import { LocoContainerComponent } from './loco-container/loco-container.component';
+import { DataService } from './services/data-service/data.service';
 
 
 @Component({
@@ -15,8 +16,13 @@ import { LocoContainerComponent } from './loco-container/loco-container.componen
   styleUrl: './app.component.css',
   providers: [{provide: BLEServiceToken, useFactory: BLEServiceFactory.create}]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'web';
 
+  ngOnInit(): void {
+    this.dataService.setup();
+  }
+
   protected bleService = inject(BLEServiceToken);
+  protected dataService = inject(DataService)
 }

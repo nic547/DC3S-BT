@@ -1,10 +1,10 @@
-import { flush } from "@angular/core/testing";
 
 export abstract class Engine {
     address: number = 3;
     functions: DccFunction[] = [];
     isForwards: boolean = true;
     speed: number = 0;
+
 }
 
 export class SimpleEngine extends Engine {
@@ -14,7 +14,19 @@ export class SimpleEngine extends Engine {
 export class PersistenEngine extends Engine {
     id: string = crypto.randomUUID();
     public name: string = '';
+    public notes: string = '';
+    public tags: string[] = [];
+    public created: Date = new Date();
+    public lastModified: Date = new Date();
+    public lastUsed: Date = new Date();
 
+    updateWith(updatedEngine: PersistenEngine) {
+        this.name = updatedEngine.name;
+        this.notes = updatedEngine.notes;
+        this.tags = updatedEngine.tags;
+        this.address = updatedEngine.address;
+        this.functions = updatedEngine.functions;
+    }
 }
 
 export class DccFunction {
