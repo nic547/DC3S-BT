@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocoContainerComponent } from './loco-container.component';
+import { EngineRootComponent } from './engine-root.component';
 
 describe('LocoContainerComponent', () => {
-  let component: LocoContainerComponent;
-  let fixture: ComponentFixture<LocoContainerComponent>;
+  let component: EngineRootComponent;
+  let fixture: ComponentFixture<EngineRootComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LocoContainerComponent]
+      imports: [EngineRootComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LocoContainerComponent);
+    fixture = TestBed.createComponent(EngineRootComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

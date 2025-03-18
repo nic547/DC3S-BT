@@ -1,7 +1,7 @@
 import { Component, inject, input, model, OnInit } from '@angular/core';
-import { StateService } from '../services/state-service/state.service';
-import { Engine, PersistenEngine as PersistentEngine } from '../lib/engines';
-import { DataService } from '../services/data-service/data.service';
+import { StateService } from '../../services/state-service/state.service';
+import { Engine, PersistenEngine as PersistentEngine } from '../types';
+import { DataService } from '../../services/data-service/data.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

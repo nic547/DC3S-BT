@@ -1,16 +1,16 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import BLEServiceToken from '../services/ble-service/ble.interface';
-import { Engine } from '../lib/engines';
+import BLEServiceToken from '../../services/ble-service/ble.interface';
+import { Engine } from '../types';
 
 @Component({
-  selector: 'app-loco-control',
+  selector: 'app-engine-controller',
   imports: [FormsModule, NgFor],
-  templateUrl: './loco-control.component.html',
-  styleUrl: './loco-control.component.css'
+  templateUrl: './engine-controller.component.html',
+  styleUrl: './engine-controller.component.css'
 })
-export class LocoControlComponent {
+export class EngineControllerComponent {
 
   private ble = inject(BLEServiceToken);
 

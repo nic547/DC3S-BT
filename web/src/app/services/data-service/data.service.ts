@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
-import { Engine, PersistenEngine } from '../../lib/engines';
+import { Engine, PersistenEngine } from '../../engine/types';
 
 @Injectable({
   providedIn: 'root'

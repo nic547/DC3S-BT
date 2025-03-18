@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { Engine, PersistenEngine } from '../../lib/engines';
+import { Engine, PersistenEngine } from '../../engine/types';
 @Injectable({
   providedIn: 'root'
 })

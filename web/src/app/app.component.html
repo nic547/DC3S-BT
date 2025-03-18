@@ -1,6 +1,6 @@
 <main class="main">
   <app-ble-setup *ngIf="!bleService.isReady()"></app-ble-setup>
-  <app-loco-container *ngIf="bleService.isReady()"></app-loco-container>
+  <app-engine-root *ngIf="bleService.isReady()"></app-engine-root>
 </main>
 
 <router-outlet />

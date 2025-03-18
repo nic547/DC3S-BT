@@ -5,13 +5,13 @@ import BLEServiceToken, { IBLEService } from './services/ble-service/ble.interfa
 import { inject } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { BLEServiceFactory } from './services/ble-service/ble.service.factory';
-import { LocoContainerComponent } from './loco-container/loco-container.component';
+import { EngineRootComponent } from './engine/engine-root.component';
 import { DataService } from './services/data-service/data.service';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BLESetupComponent, LocoContainerComponent, NgIf],
+  imports: [RouterOutlet, BLESetupComponent, EngineRootComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [{provide: BLEServiceToken, useFactory: BLEServiceFactory.create}]

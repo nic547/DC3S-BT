@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { StateService } from '../services/state-service/state.service';
-import { PersistenEngine } from '../lib/engines';
+import { StateService } from '../../services/state-service/state.service';
+import { PersistenEngine } from '../../engine/types';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DataService } from '../services/data-service/data.service';
+import { DataService } from '../../services/data-service/data.service';
 
 @Component({
   selector: 'app-engine-editor',
