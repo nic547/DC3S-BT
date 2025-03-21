@@ -1,9 +1,17 @@
 <dialog class="max active">
     <h5>Select Engine</h5>
-    <div>
-      <div *ngFor="let engine of engines" class="grid">
-        <button (click)="select(engine)">{{engine.name}}</button>
-      </div>
+    <div class="grid">
+      <article class="s12 m6 l3" *ngFor="let engine of engines">
+        <h5 class="small">{{engine.name}}</h5>
+        <p>
+         @for(tag of engine.tags; track tag) {
+          <button class="chip small-elevate">{{tag}}</button>
+         }
+        </p>
+        <nav>
+          <button (click)="select(engine)">Select</button>
+        </nav>
+      </article>      
     </div>
     <nav class="right-align">
       <button class="border" (click)="close()">Cancel</button>

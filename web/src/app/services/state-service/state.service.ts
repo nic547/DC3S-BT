@@ -14,7 +14,11 @@ export class StateService {
 
   public editingEngine: WritableSignal<PersistenEngine | null> = signal(null);
 
-  public async activateEngine(engine: Engine): Promise<void> {
+  public activateEngine(engine: Engine): void {
     this.activeEnginesSignal.update(v => [...v, engine]);
+  }
+
+  public deactivateEngine(engine: Engine): void {
+    this.activeEnginesSignal.update(v => v.filter(e => e !== engine));
   }
 }

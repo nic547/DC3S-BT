@@ -8,7 +8,6 @@ export abstract class Engine {
 }
 
 export class SimpleEngine extends Engine {
-    
 }
 
 export class PersistenEngine extends Engine {

@@ -1,20 +1,24 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import BLEServiceToken from '../../services/ble-service/ble.interface';
-import { Engine } from '../types';
+import { Engine, PersistenEngine as PersistentEngine, SimpleEngine } from '../types';
+import { StateService } from '../../services/state-service/state.service';
 
 @Component({
   selector: 'app-engine-controller',
-  imports: [FormsModule, NgFor],
+  imports: [FormsModule, CommonModule],
   templateUrl: './engine-controller.component.html',
   styleUrl: './engine-controller.component.css'
 })
 export class EngineControllerComponent {
 
   private ble = inject(BLEServiceToken);
+  private stateService = inject(StateService);
 
   public engine = input.required<Engine>();
+  public isSimpleEngine = computed(() => this.engine() instanceof SimpleEngine);
+  public persistentEngine = computed(() => this.engine() as PersistentEngine); // bit of a hack to get around type narrowing not really working in the template
 
   async toggleFunction(number: number) {
     await this.ble.setFunction(this.engine().address, number, !this.engine().functions[number].isActive);
@@ -32,12 +36,19 @@ export class EngineControllerComponent {
     await this.ble.setSpeed128(this.engine().address, this.engine().speed, forward);
     console.log("setDirection",this.engine().speed, forward);
     
-    
   }
 
   async setSpeed() {
     await this.ble.setSpeed128(this.engine().address, this.engine().speed, this.engine().isForwards);
     console.log("setSpeed", this.engine().speed, this.engine().isForwards);
+  }
+
+  editEngine() {
+    this.stateService.editingEngine.set(this.persistentEngine());
+  }
+  
+  deactivateEngine() {
+    this.stateService.deactivateEngine(this.engine());
   }
 
 }

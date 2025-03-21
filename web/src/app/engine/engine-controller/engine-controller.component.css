@@ -30,6 +30,13 @@
 #address{
     grid-area: name;
     margin-bottom: 16px; /* default is even larger - revist later*/
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
+
+#address > .field {
+    margin-bottom: 0px;
 }
 
 #speed{
@@ -59,4 +66,8 @@
 
 #emergency{
     grid-area: emergency;
+}
+
+#editclosediv > button {
+    margin-right: 0px;
 }

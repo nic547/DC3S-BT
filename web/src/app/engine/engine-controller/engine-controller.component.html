@@ -1,12 +1,31 @@
-<div id="loco-grid">
-  <div class="field label border" id="address">
-    <input [(ngModel)]="engine().address" type="number" placeholder=" " />
-    <label>DCC Address</label>
+<article id="loco-grid" class="border">
+  <div id="address">
+
+    @if (isSimpleEngine()) {
+    <div class="field label border">
+      <input [(ngModel)]="engine().address" type="number" placeholder=" " />
+      <label>DCC Address</label>
+    </div>
+    } @else {
+    <div>
+      <h5 class="small">{{persistentEngine().name}}</h5>
+    </div>
+    }
+
+    <div class="align-right align-top">
+      <button *ngIf="!isSimpleEngine()" class="circle" (click)="editEngine()">
+        <i>edit</i>
+      </button>
+      <button class="circle" (click)="deactivateEngine()">
+        <i>close</i>
+      </button>
+    </div>
   </div>
 
   <article id="speed" class="round">
     <label class="slider max vertical">
-      <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed" (input)="setSpeed()"/>
+      <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed"
+        (input)="setSpeed()" />
       <span></span>
     </label>
   </article>
@@ -19,4 +38,4 @@
     <button *ngFor="let f of engine().functions" (click)="toggleFunction(f.number)" class="small"
       [class.border]="!f.isActive">{{f.displayName}}</button>
   </div>
-</div>
+</article>

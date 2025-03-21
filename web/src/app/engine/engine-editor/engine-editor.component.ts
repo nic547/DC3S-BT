@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { StateService } from '../../services/state-service/state.service';
-import { PersistenEngine } from '../../engine/types';
+import { PersistenEngine } from '../types';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data-service/data.service';
@@ -29,16 +29,26 @@ export class EngineEditorComponent implements OnInit {
     this.engine = structuredClone(engine);
   }
 
-  save() {
-    let existingEngine = this.stateService.activeEngines().find(e => e instanceof PersistenEngine && e.id === this.engine.id) as PersistenEngine | undefined;
+  async save() {
+    let existingEngine = await this.dataService.getEngine(this.engine.id);
     if (existingEngine) {
       existingEngine.updateWith(this.engine);
       this.dataService.addOrUpdateEngine(existingEngine);
+      
+      let debug = this.stateService.activeEngines();
+      let activeEngine = this.stateService.activeEngines().find(e => e instanceof PersistenEngine && e.id === existingEngine.id) as PersistenEngine;
+      if (activeEngine) {
+        activeEngine.updateWith(existingEngine);
+      }
+      else {
+        this.stateService.activateEngine(existingEngine);
+      }
     }
     else {
       this.stateService.activateEngine(this.engine);
       this.dataService.addOrUpdateEngine(this.engine);
     }
+    this.stateService.editingEngine.set(null);
   }
 
   cancel() {
