@@ -30,7 +30,6 @@ export class EngineControllerComponent {
     this.engine().speed = 0;
     // Bit of a hack to get the slider to update
     (document.getElementById("speedSlider") as HTMLInputElement).value = "0";
-    await ui();
 
     this.engine().isForwards = forward;
     await this.ble.setSpeed128(this.engine().address, this.engine().speed, forward);
