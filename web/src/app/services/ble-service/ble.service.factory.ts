@@ -1,5 +1,5 @@
 import { BleFakeService } from "./ble-fake.service";
-import { BLEService } from "./ble.service copy";
+import { BLEService } from "./ble.service";
 
 export class BLEServiceFactory {
     static create(): BleFakeService {
