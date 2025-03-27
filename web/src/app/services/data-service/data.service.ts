@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
-import { Engine, PersistenEngine } from '../../engine/types';
+import { DccFunction, Engine, PersistenEngine } from '../../engine/types';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +55,11 @@ export class DataService {
         (instance as any)[key] = (engine as any)[key];
       }
     }
+
+    //Deal with functions
+    instance.functions = engine.functions.map((f: any) => {
+      return Object.assign(new DccFunction, f);
+    });
     
     return instance;
   }

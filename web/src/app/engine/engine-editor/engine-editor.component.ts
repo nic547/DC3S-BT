@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { StateService } from '../../services/state-service/state.service';
-import { PersistenEngine } from '../types';
+import { DccFunction, PersistenEngine } from '../types';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data-service/data.service';
@@ -20,6 +20,8 @@ export class EngineEditorComponent implements OnInit {
 
   protected tagInput: string = '';
 
+  protected numberOfFunctions: number = 0;
+
   ngOnInit(): void {
     let engine = this.stateService.editingEngine();
     if (engine == null) {
@@ -27,6 +29,7 @@ export class EngineEditorComponent implements OnInit {
       return;
     }
     this.engine = structuredClone(engine);
+    this.numberOfFunctions = this.engine.functions.length;
   }
 
   async save() {
@@ -35,7 +38,6 @@ export class EngineEditorComponent implements OnInit {
       existingEngine.updateWith(this.engine);
       this.dataService.addOrUpdateEngine(existingEngine);
       
-      let debug = this.stateService.activeEngines();
       let activeEngine = this.stateService.activeEngines().find(e => e instanceof PersistenEngine && e.id === existingEngine.id) as PersistenEngine;
       if (activeEngine) {
         activeEngine.updateWith(existingEngine);
@@ -72,6 +74,29 @@ export class EngineEditorComponent implements OnInit {
       if (event.key === 'Enter') {
           this.addTag();
       }
+    }
+
+    handleFunctionNumberChange() {
+      let difference = this.engine.functions.length - this.numberOfFunctions;
+      if (difference > 0) {
+        this.engine.functions.splice(this.numberOfFunctions, difference);
+      }
+      else if (difference < 0) {
+        for (let i = 0; i < -difference; i++) {
+          this.engine.functions.push(DccFunction.create(this.engine.functions.length + i));
+        }
+      }
+
+    }
+
+    addFunction() {
+      this.numberOfFunctions++;
+      this.handleFunctionNumberChange();
+    }
+
+    removeFunction() {
+      this.numberOfFunctions--;
+      this.handleFunctionNumberChange();
     }
 
 }

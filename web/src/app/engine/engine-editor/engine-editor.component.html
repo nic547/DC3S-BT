@@ -16,23 +16,46 @@
             <button *ngFor="let tag of engine.tags" class="chip small-elevate" (click)="removeTag(tag)">
                 <span>{{tag}}</span>
                 <i>close</i>
-              </button>
-              <div class="grid">
+            </button>
+            <div class="grid">
                 <div class="field label border s8 m9">
-                    <input [(ngModel)]="tagInput" type="text" placeholder="" (keydown)="handleTagInputKeypress($event)"/>
+                    <input [(ngModel)]="tagInput" type="text" placeholder=""
+                        (keydown)="handleTagInputKeypress($event)" />
                     <label class="responsive">New Tag</label>
                 </div>
                 <button class="s4 m3" (click)="addTag()">Add</button>
-              </div>
+            </div>
         </fieldset>
     </div>
+    <fieldset>
+        <legend>Functions</legend>
+        <div class=function-number-container>
+            <div class="field label border">
+                <input [(ngModel)]="numberOfFunctions" type="number" min="0" max="69" step="1"
+                    (change)="handleFunctionNumberChange()" />
+                <label>Number of functions</label>
+            </div>
+            <button class ="small circle" (click)="addFunction()" [disabled]="numberOfFunctions >= 69">+</button>
+            <button class ="small circle" (click)="removeFunction()" [disabled]="numberOfFunctions <= 0">-</button>
+        </div>
+        <div *ngFor="let function of engine.functions" class="field label border grid function-element">
+            <div class="field label border small s8">
+                <input [(ngModel)]="function.description" type="text"  />
+                <label>F{{function.number}}</label>
+            </div>
+            <div class="field label border small s4">
+                <input [(ngModel)]="function.duration" type="number" min="0" max="5000" step="250" />
+                <label>Duration (ms)</label>
+            </div>
+        </div>
+    </fieldset>
     <div class="field textarea label border extra">
         <textarea [(ngModel)]="engine.notes"></textarea>
         <label>Notes</label>
-      </div>
-      
+    </div>
+
     <nav class="right-align">
-      <button (click)="cancel()" class="border">Cancel</button>
-      <button (click)="save()">Save</button>
+        <button (click)="cancel()" class="border">Cancel</button>
+        <button (click)="save()">Save</button>
     </nav>
 </dialog>

@@ -38,7 +38,7 @@ export class DccFunction {
 
     number: number = 0;
     description: string = '';
-    duration: number = -1;
+    duration: number = 0;
     isActive: boolean = false;
 
     get displayName() {return this.description ? `F${this.number} - ${this.description}` : `F${this.number}`;}
