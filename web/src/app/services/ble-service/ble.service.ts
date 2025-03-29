@@ -61,25 +61,64 @@ export class BLEService implements IBLEService {
     this.isReady.set(true);
     this.isLoading.set(false);
   }
-
-  async setFunction(address: number, number: number, state: boolean) {
-    let buffer = new ArrayBuffer(4);
-    let view = new DataView(buffer);
-    view.setUint16(0, address, true);
-    view.setUint8(2, number);
-    view.setUint8(3, state ? 1 : 0);
-
-    this.functionCommand?.writeValue(buffer);
+  
+  private commandQueue: Promise<void> = Promise.resolve();
+  private pendingCommands: Map<string, { args: any[], execute: () => Promise<void> }> = new Map();
+  
+  private enqueueCommand(key: string, args: any[], execute: () => Promise<void>): Promise<void> {
+    // Check if a command with the same key is already pending
+    if (this.pendingCommands.has(key)) {
+      // Replace the pending command with the latest one
+      this.pendingCommands.set(key, { args, execute });
+      return this.commandQueue;
+    }
+  
+    // Add the new command to the queue
+    this.pendingCommands.set(key, { args, execute });
+    this.commandQueue = this.commandQueue.then(async () => {
+      // Execute the latest version of the command
+      const command = this.pendingCommands.get(key);
+      if (command) {
+        this.pendingCommands.delete(key);
+        await command.execute();
+      }
+    }).catch(error => {
+      console.error("Error in command execution:", error);
+    });
+  
+    return this.commandQueue;
   }
-
+  
   async setSpeed128(address: number, speed: number, forwards: boolean) {
-    let buffer = new ArrayBuffer(4);
-    let view = new DataView(buffer);
-    view.setUint16(0, address, true);
-    view.setUint8(2, speed);
-    view.setUint8(3, forwards ? 1 : 0);
-
-    this.Speed128Command?.writeValue(buffer);
+    await this.enqueueCommand(
+      `setSpeed128-${address}`, // Unique key for folding based on address
+      [address, speed, forwards],
+      async () => {
+        let buffer = new ArrayBuffer(4);
+        let view = new DataView(buffer);
+        view.setUint16(0, address, true);
+        view.setUint8(2, speed);
+        view.setUint8(3, forwards ? 1 : 0);
+  
+        await this.Speed128Command?.writeValue(buffer);
+      }
+    );
+  }
+  
+  async setFunction(address: number, number: number, state: boolean) {
+    await this.enqueueCommand(
+      `setFunction-${address}-${number}`, // Unique key for folding based on address and function number
+      [address, number, state],
+      async () => {
+        let buffer = new ArrayBuffer(4);
+        let view = new DataView(buffer);
+        view.setUint16(0, address, true);
+        view.setUint8(2, number);
+        view.setUint8(3, state ? 1 : 0);
+  
+        await this.functionCommand?.writeValue(buffer);
+      }
+    );
   }
 
   private async loadCharacteristics(server: BluetoothRemoteGATTServer) {
