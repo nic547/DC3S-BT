@@ -21,9 +21,9 @@ export class EngineControllerComponent {
   public persistentEngine = computed(() => this.engine() as PersistentEngine); // bit of a hack to get around type narrowing not really working in the template
 
   async toggleFunction(number: number) {
-    await this.ble.setFunction(this.engine().address, number, !this.engine().functions[number].isActive);
     this.engine().functions[number].isActive = !this.engine().functions[number].isActive;
     console.log("toggleFunction", number, this.engine().functions[number].isActive);
+    await this.ble.setFunction(this.engine().address, number, this.engine().functions[number].isActive);
   }
 
   async setDirection(forward: boolean) {
@@ -32,14 +32,14 @@ export class EngineControllerComponent {
     (document.getElementById("speedSlider") as HTMLInputElement).value = "0";
 
     this.engine().isForwards = forward;
-    await this.ble.setSpeed128(this.engine().address, this.engine().speed, forward);
-    console.log("setDirection",this.engine().speed, forward);
     
+    console.log("setDirection",this.engine().speed, forward);
+    await this.ble.setSpeed128(this.engine().address, this.engine().speed, forward);
   }
 
   async setSpeed() {
-    await this.ble.setSpeed128(this.engine().address, this.engine().speed, this.engine().isForwards);
     console.log("setSpeed", this.engine().speed, this.engine().isForwards);
+    await this.ble.setSpeed128(this.engine().address, this.engine().speed, this.engine().isForwards);
   }
 
   editEngine() {
