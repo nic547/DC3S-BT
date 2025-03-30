@@ -1,3 +1,7 @@
+:host {
+    height: 100%;
+}
+
 #functions > button {
     margin: 0px;
 }
@@ -16,15 +20,18 @@
                             "backwards forwards functions"
                             "emergency emergency functions";
 
-    grid-template-columns: 1fr 1fr 10fr;
+    grid-template-columns: 1fr 1fr 16fr;
     grid-template-rows:    auto 1fr auto auto;
-    height: calc(100vh - 2 * 8px);
+    max-width: min(95dvw, 600px);
+    height: calc(100% -  2 * 8px);
+    box-sizing: border-box;
     margin: 8px;
     gap: 4px;
 }
 
 #functions{
     grid-area: functions;
+    min-width: 120px;
 }
 
 #address{

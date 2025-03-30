@@ -1,11 +1,11 @@
 <app-engine-selection *ngIf="showSelection()" [(showSelection)]="showSelection"></app-engine-selection>
 <app-engine-editor *ngIf="stateService.editingEngine() != null"></app-engine-editor>
 
-<div id="engine-container">
+<div id="engine-container" class="row scroll">
     <app-engine-controller
     *ngFor="let engine of stateService.activeEngines()"
     [engine]="engine"></app-engine-controller>
-    <div>
+    <div class="actions">
         <button (click)="selectEngine()">Select Engine</button>
         <button (click)="createPersistentEngine()">Create New Engine</button>
         <button (click)="createSimpleEngine()">Control Engine via Address</button>
