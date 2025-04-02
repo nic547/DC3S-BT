@@ -4,10 +4,14 @@ import { CommonModule } from '@angular/common';
 import BLEServiceToken from '../../services/ble-service/ble.interface';
 import { Engine, PersistenEngine as PersistentEngine, SimpleEngine } from '../types';
 import { StateService } from '../../services/state-service/state.service';
+import { EditIconDirective } from '../../ui/edit-icon.directive';
+import { CloseIconDirective } from '../../ui/close-icon.directive';
+import { ArrowForwardIconDirective } from '../../ui/arrow-forward-icon.directive';
+import { ArrowBackIconDirective } from '../../ui/arrow-back-icon.directive';
 
 @Component({
   selector: 'app-engine-controller',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, CloseIconDirective, EditIconDirective, ArrowForwardIconDirective, ArrowBackIconDirective],
   templateUrl: './engine-controller.component.html',
   styleUrl: './engine-controller.component.css'
 })

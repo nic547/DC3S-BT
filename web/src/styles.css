@@ -27,9 +27,19 @@ button {
     border-radius: 0.5rem;
     border: 1px solid var(--color-primary);
     font-size: 1rem;
+    line-height: 1;
     padding: var(--padding);
     margin: 0.25rem;
     cursor: pointer;
+    box-sizing: border-box;
+}
+
+button.svg {
+    padding: calc(var(--padding) - 0.25rem); /* icons are 1.5rem instead of 1rem */
+}
+
+button.svg > svg {
+    display: block; /* Somehow the icons buttons aren't square otherwise */
 }
 
 button:active {

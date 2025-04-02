@@ -13,18 +13,16 @@
     }
 
     <div class="align-right align-top">
-      <button *ngIf="!isSimpleEngine()" class="circle" (click)="editEngine()">
-        <i>edit</i>
+      <button *ngIf="!isSimpleEngine()" (click)="editEngine()"  appEditIcon>
       </button>
-      <button class="circle" (click)="deactivateEngine()">
-        <i>close</i>
+      <button (click)="deactivateEngine()" appCloseIcon>
       </button>
     </div>
   </div>
   <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed" (input)="setSpeed()" />
   <span id="speed-display">{{engine().speed}}</span>
-  <button id="backwards" (click)="setDirection(false)">&lt;</button>
-  <button id="forwards" (click)="setDirection(true)">&gt;</button>
+  <button appArrowBackIcon id="backwards" (click)="setDirection(false)"></button>
+  <button appArrowForwardIcon id="forwards" (click)="setDirection(true)"></button>
   <button id="emergency" disabled="true">E-Stop</button>
 
   <div id="functions" class="scroll">

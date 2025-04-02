@@ -31,9 +31,6 @@
     align-items: center;
 }
 
-#address > .field {
-    margin-bottom: 0px;
-}
 #speedSlider {
     grid-area: speed;
     writing-mode: vertical-lr;
