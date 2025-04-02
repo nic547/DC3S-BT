@@ -8,7 +8,7 @@
     </div>
     } @else {
     <div>
-      <h5 class="small">{{persistentEngine().name}}</h5>
+      <h3 class="small">{{persistentEngine().name}}</h3>
     </div>
     }
 
@@ -21,14 +21,7 @@
       </button>
     </div>
   </div>
-
-  <article id="speed" class="round">
-    <label class="slider max vertical">
-      <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed"
-        (input)="setSpeed()" />
-      <span></span>
-    </label>
-  </article>
+  <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed" (input)="setSpeed()" />
   <span id="speed-display">{{engine().speed}}</span>
   <button id="backwards" (click)="setDirection(false)">&lt;</button>
   <button id="forwards" (click)="setDirection(true)">&gt;</button>
@@ -36,6 +29,6 @@
 
   <div id="functions" class="scroll">
     <button *ngFor="let f of engine().functions" (click)="toggleFunction(f.number)" class="small"
-      [class.border]="!f.isActive">{{f.displayName}}</button>
+      [class.toggle]="!f.isActive">{{f.displayName}}</button>
   </div>
 </article>

@@ -1,37 +1,26 @@
-:host {
-    height: 100%;
-}
-
-#functions > button {
-    margin: 0px;
-}
-
 #functions {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-content: start;
-    gap: 2px;
 }
 
 #loco-grid{
     display: grid;
     grid-template-areas:    "name name name"
                             "speed speed functions"
+                            "display display functions"
                             "backwards forwards functions"
                             "emergency emergency functions";
 
-    grid-template-columns: 1fr 1fr 16fr;
-    grid-template-rows:    auto 1fr auto auto;
-    max-width: min(95dvw, 600px);
-    height: calc(100% -  2 * 8px);
+    grid-template-columns: 1fr 1fr 10fr;
+    grid-template-rows:    auto 1fr auto auto auto;
+    height: calc(100dvh - 2 * var(--small-padding));
     box-sizing: border-box;
-    margin: 8px;
     gap: 4px;
 }
 
 #functions{
     grid-area: functions;
-    min-width: 120px;
 }
 
 #address{
@@ -45,22 +34,23 @@
 #address > .field {
     margin-bottom: 0px;
 }
-
-#speed{
+#speedSlider {
     grid-area: speed;
-    margin: 0px 8px 8px 8px;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    vertical-align: middle;
+    justify-self: center;
+    height: max-content;
+    height: 100%;
 }
 
 #speed-display{
-    grid-area: speed;
-    margin: 16px;
+    grid-area: display;
     text-align: center;
     align-content: center;
-    z-index: 10;
-    pointer-events: none;
     font-size: 2em;
     font-weight: bold;
-    color: var(--on-background);
+    color: var(--text-primary);
 }
 
 #forwards{

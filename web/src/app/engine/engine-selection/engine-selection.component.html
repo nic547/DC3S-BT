@@ -1,11 +1,11 @@
-<dialog class="max active">
+<dialog #selectionDialog>
     <h5>Select Engine</h5>
     <div class="grid">
       <article class="s12 m6 l3" *ngFor="let engine of engines">
-        <h5 class="small">{{engine.name}}</h5>
+        <h5 class="small border">{{engine.name}}</h5>
         <p>
          @for(tag of engine.tags; track tag) {
-          <button class="chip small-elevate">{{tag}}</button>
+          <button class="small border">{{tag}}</button>
          }
         </p>
         <nav>
@@ -13,8 +13,8 @@
         </nav>
       </article>      
     </div>
-    <nav class="right-align">
-      <button class="border" (click)="close()">Cancel</button>
+    <nav class="align-right">
+      <button class="secondary" (click)="close()">Cancel</button>
       <button (click)="createNewPersistentEngine()">Create New</button>
     </nav>
 </dialog>

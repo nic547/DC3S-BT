@@ -1,1 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    color-scheme: light dark;
+    --color-primary: light-dark(oklch(0.707 0.165 254.624), oklch(0.55 0.245 262.881)); /*blue-400 or blue-600 from tailwind */
+    --color-secondary: light-dark(oklch(0.746 0.16 232.661), oklch(0.588 0.158 241.966)); /* sky-400 or sky-600 */
+    --background-primary: light-dark(oklch(0.967 0.001 286.375), oklch(0.21 0.006 285.885)); /* zinc-100 or zinc-900 */
+    --background-secondary: light-dark(oklch(0.92 0.004 286.32), oklch(0.274 0.006 286.033)); /* zinc-200 or zinc-800 */
+    --text-primary: light-dark(oklch(0.21 0.034 264.665), oklch(0.967 0.003 264.542));
+    --text-secondary: light-dark(oklch(0.278 0.033 256.848), oklch(0.928 0.006 264.531));
+    --border-color: light-dark(oklch(0.707 0.022 261.325), oklch(0.446 0.03 256.802));
+
+    font-size: 1rem;
+    font-family: sans-serif;
+
+    --padding: 0.75rem;
+    --small-padding: 0.25rem;
+}
+
+body {
+    color: var(--text-primary);
+    background-color: var(--background-primary);
+}
+
+button {
+    background-color: var(--color-primary);
+    border-width: 0.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-primary);
+    font-size: 1rem;
+    padding: var(--padding);
+    margin: 0.25rem;
+    cursor: pointer;
+}
+
+button:active {
+    filter: brightness(0.75);
+}
+
+button.secondary {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+button.small {
+    padding:  calc(var(--padding) / 2);
+}
+
+button.toggle, button.border {
+    background-color: var(--background-secondary);
+    border-color: var(--border-color);
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(1px) brightness(0.375);
+}
+
+dialog {
+    border-width: 1px;
+    border-radius: 1rem;
+    border-color: var(--border-color);
+    background-color: var(--background-primary);
+}
+
+article {
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: var(--small-padding);
+    margin: var(--small-padding);
+}
+
+.align-right {
+    text-align: right;
+}

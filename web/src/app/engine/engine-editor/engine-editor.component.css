@@ -3,7 +3,3 @@
     grid-template-columns: 1fr auto auto;
     align-items: baseline;
 }
-
-.function-element {
-    margin-bottom: 4px; /* reduced compared to default */
-}
