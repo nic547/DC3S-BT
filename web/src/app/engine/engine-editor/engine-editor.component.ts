@@ -89,7 +89,7 @@ export class EngineEditorComponent implements OnInit, AfterViewInit {
       }
       else if (difference < 0) {
         for (let i = 0; i < -difference; i++) {
-          this.engine.functions.push(DccFunction.create(this.engine.functions.length + i));
+          this.engine.functions.push(DccFunction.create(this.engine.functions.length));
         }
       }
 
