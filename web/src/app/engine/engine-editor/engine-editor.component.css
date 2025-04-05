@@ -3,3 +3,9 @@
     grid-template-columns: 1fr auto auto;
     align-items: baseline;
 }
+
+.function-element {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    column-gap: 4px;
+}
