@@ -1,14 +1,14 @@
-<dialog #selectionDialog>
-    <h5>Select Engine</h5>
-    <div class="grid">
-      <article class="s12 m6 l3" *ngFor="let engine of engines">
-        <h5 class="small border">{{engine.name}}</h5>
+<dialog #selectionDialog (cancel)="close()">
+    <h2>Select Engine</h2>
+    <div class="selectionGrid">
+      <article *ngFor="let engine of engines">
+        <h3 class="small border">{{engine.name}}</h3>
         <p>
          @for(tag of engine.tags; track tag) {
           <button class="small border">{{tag}}</button>
          }
         </p>
-        <nav>
+        <nav class="align-right">
           <button (click)="select(engine)">Select</button>
         </nav>
       </article>      
