@@ -1,8 +1,11 @@
 #engine-container {
     display: flex;
-    justify-content: center;
     align-items: center;
     height: 100dvh;
+}
+
+#engine-container > :first-child {
+    margin-left: auto;
 }
 
 .engine-actions {
@@ -10,6 +13,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-right: auto;
 }
 
 .engine-actions > button {
