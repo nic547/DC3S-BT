@@ -1,11 +1,18 @@
 #engine-container {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     height: 100dvh;
 }
 
-.actions {
-    display:flex;
+.engine-actions {
+    display: flex;
     flex-direction: column;
-    gap: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.engine-actions > button {
+    width: 300px;
+    margin: 12px;
 }
