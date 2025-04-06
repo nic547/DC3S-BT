@@ -30,6 +30,10 @@ export class DataService {
     await this.db?.put('engines', engine, engine.id)
   }
 
+  async deleteEngine(engine: PersistenEngine): Promise<void> {
+    await this.db?.delete('engines', engine.id)
+  }
+
   async getEngines(): Promise<PersistenEngine[]> {
     const engines = await this.db?.getAll('engines')
     return engines?.map(engine => this.rehydrateEngine(engine)) || [];

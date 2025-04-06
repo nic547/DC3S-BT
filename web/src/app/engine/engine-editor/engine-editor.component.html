@@ -1,13 +1,13 @@
-<dialog class="max active">
+<dialog #engineEditor (cancel)="cancel()" (close)="cancel()">
     <h5>Edit Engine</h5>
     <div>
-        <div class="field label border">
-            <input [(ngModel)]="engine.name" type="text" placeholder="" />
+        <div class="input">
             <label>Name</label>
+            <input [(ngModel)]="engine.name" type="text" placeholder="" />
         </div>
-        <div class="field label border">
-            <input [(ngModel)]="engine.address" type="number" placeholder="" min="1" max="10239" />
+        <div class="input">
             <label>DCC Address</label>
+            <input [(ngModel)]="engine.address" type="number" placeholder="" min="1" max="10239" />
         </div>
     </div>
     <div>
@@ -17,44 +17,42 @@
                 <span>{{tag}}</span>
                 <i>close</i>
             </button>
-            <div class="grid">
-                <div class="field label border s8 m9">
+                <div class="input">
                     <input [(ngModel)]="tagInput" type="text" placeholder=""
                         (keydown)="handleTagInputKeypress($event)" />
-                    <label class="responsive">New Tag</label>
+                    <label>New Tag</label>
                 </div>
                 <button class="s4 m3" (click)="addTag()">Add</button>
-            </div>
         </fieldset>
     </div>
     <fieldset>
         <legend>Functions</legend>
         <div class=function-number-container>
-            <div class="field label border">
+            <div class="input">
+                <label>Functions</label>
                 <input [(ngModel)]="numberOfFunctions" type="number" min="0" max="69" step="1"
                     (change)="handleFunctionNumberChange()" />
-                <label>Number of functions</label>
             </div>
-            <button class ="small circle" (click)="addFunction()" [disabled]="numberOfFunctions >= 69">+</button>
-            <button class ="small circle" (click)="removeFunction()" [disabled]="numberOfFunctions <= 0">-</button>
+            <button appAddIcon (click)="addFunction()" [disabled]="numberOfFunctions >= 69"></button>
+            <button appRemoveIcon (click)="removeFunction()" [disabled]="numberOfFunctions <= 0"></button>
         </div>
-        <div *ngFor="let function of engine.functions" class="field label border grid function-element">
-            <div class="field label border small s8">
-                <input [(ngModel)]="function.description" type="text"  />
+        <div *ngFor="let function of engine.functions" class="function-element">
+            <div class="input">
                 <label>F{{function.number}}</label>
+                <input [(ngModel)]="function.description" type="text"  />
             </div>
-            <div class="field label border small s4">
-                <input [(ngModel)]="function.duration" type="number" min="0" max="5000" step="250" />
+            <div class="input">
                 <label>Duration (ms)</label>
+                <input [(ngModel)]="function.duration" type="number" min="0" max="5000" step="250" />
             </div>
         </div>
     </fieldset>
-    <div class="field textarea label border extra">
-        <textarea [(ngModel)]="engine.notes"></textarea>
+    <div class="input">
         <label>Notes</label>
+        <textarea [(ngModel)]="engine.notes"></textarea>
     </div>
 
-    <nav class="right-align">
+    <nav class="align-right">
         <button (click)="cancel()" class="border">Cancel</button>
         <button (click)="save()">Save</button>
     </nav>

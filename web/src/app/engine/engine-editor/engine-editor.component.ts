@@ -1,17 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { StateService } from '../../services/state-service/state.service';
 import { DccFunction, PersistenEngine } from '../types';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data-service/data.service';
+import { AddIconDirective } from '../../ui/add-icon.directive';
+import { RemoveIconDirective } from '../../ui/remove-icon.directive';
 
 @Component({
   selector: 'app-engine-editor',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, AddIconDirective, RemoveIconDirective],
   templateUrl: './engine-editor.component.html',
   styleUrl: './engine-editor.component.css'
 })
-export class EngineEditorComponent implements OnInit {
+export class EngineEditorComponent implements OnInit, AfterViewInit {
 
   private stateService = inject(StateService);
   private dataService = inject(DataService);
@@ -22,6 +24,8 @@ export class EngineEditorComponent implements OnInit {
 
   protected numberOfFunctions: number = 0;
 
+  @ViewChild('engineEditor') engineEditorDialog: ElementRef<HTMLDialogElement> | null = null
+
   ngOnInit(): void {
     let engine = this.stateService.editingEngine();
     if (engine == null) {
@@ -30,6 +34,10 @@ export class EngineEditorComponent implements OnInit {
     }
     this.engine = structuredClone(engine);
     this.numberOfFunctions = this.engine.functions.length;
+  }
+
+  ngAfterViewInit(): void {
+    this.engineEditorDialog?.nativeElement.showModal();
   }
 
   async save() {
@@ -83,7 +91,7 @@ export class EngineEditorComponent implements OnInit {
       }
       else if (difference < 0) {
         for (let i = 0; i < -difference; i++) {
-          this.engine.functions.push(DccFunction.create(this.engine.functions.length + i));
+          this.engine.functions.push(DccFunction.create(this.engine.functions.length));
         }
       }
 

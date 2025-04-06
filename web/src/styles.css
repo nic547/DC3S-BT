@@ -1,1 +1,145 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    color-scheme: light dark;
+    --color-primary:        light-dark(oklch(0.707 0.165 254.624),  oklch(0.550 0.245 262.881)); /*blue-400 or blue-600 from tailwind */
+    --color-primary-alt:    light-dark(oklch(48.8% 0.243 264.376), oklch(80.9% 0.105 251.813)); /*blue-300 or blue-700 from tailwind */
+    --color-secondary:      light-dark(oklch(0.746 0.160 232.661),  oklch(0.588 0.158 241.966)); /* sky-400 or sky-600 */
+    --background-primary:   light-dark(oklch(0.967 0.001 286.375),  oklch(0.210 0.006 285.885)); /* zinc-100 or zinc-900 */
+    --background-secondary: light-dark(oklch(0.920 0.004 286.320),  oklch(0.274 0.006 286.033)); /* zinc-200 or zinc-800 */
+    --text-primary:         light-dark(oklch(0.210 0.006 285.885),  oklch(0.967 0.001 286.375));
+    --text-secondary:       light-dark(oklch(0.370 0.013 285.805),  oklch(0.871 0.006 286.286)); /* zinc-700 or zinc-300 */
+    --border-color:         light-dark(oklch(0.707 0.022 261.325),  oklch(0.446 0.030 256.802));
+
+    --color-error-background: light-dark(oklch(88.5% 0.062 18.334), oklch(44.4% 0.177 26.899)); /* red-200 or red-800 */
+
+    font-size: 1rem;
+    font-family: sans-serif;
+
+    --padding: 0.75rem;
+    --small-padding: 0.25rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: var(--text-primary);
+    background-color: var(--background-primary);
+}
+
+button {
+    background-color: var(--color-primary);
+    border-width: 0.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-primary);
+    font-size: 1rem;
+    line-height: 1;
+    padding: var(--padding);
+    margin: 0.25rem;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+button.svg {
+    padding: calc(var(--padding) - 0.25rem); /* icons are 1.5rem instead of 1rem */
+}
+
+button.svg > svg {
+    display: block; /* Somehow the icons buttons aren't square otherwise */
+}
+
+button:active {
+    filter: brightness(0.75);
+}
+
+button.secondary {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+button.small {
+    padding:  calc(var(--padding) / 2);
+}
+
+button.toggle, button.border {
+    background-color: var(--background-secondary);
+    border-color: var(--border-color);
+}
+
+button:disabled {
+    filter: grayscale(1);
+    color: var(--text-secondary); /* By default the font is really grey, hard to read */
+    cursor: initial;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(1px) brightness(0.375);
+}
+
+dialog {
+    min-width: min(600px, 100dvw);
+    border-width: 1px;
+    border-radius: 1rem;
+    border-color: var(--border-color);
+    background-color: var(--background-primary);
+}
+
+article {
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: var(--small-padding);
+    margin: var(--small-padding);
+
+    &.error {
+        background-color: var(--color-error-background);
+        border: 1px  solid var(--color-error-background);
+        padding: var(--padding);
+    }
+}
+
+.align-right {
+    text-align: right;
+}
+
+div.input {
+
+    position: relative;
+
+    & > input, & > textarea {
+        font-size: 1rem;
+        border: none;
+        border-bottom: 2px solid var(--border-color);
+        background-color: var(--background-secondary);
+        padding: calc(var(--padding) / 2);
+        padding-top: 1.5rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        width: calc(100%);
+    }
+
+    & > input:focus, & > input:focus-visible, & > textarea:focus, & > textarea:focus-visible {
+        outline: none;
+        border: none;
+        border-bottom: 2px solid var(--color-primary-alt);
+    }
+
+    & > label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        z-index: 2;
+        position: absolute;
+        top: 0.5rem;
+        left: calc(var(--padding) / 2);
+    }
+
+    &:focus-within > label {
+        color: var(--color-primary-alt);
+    }
+}
+
+fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    color: var(--text-secondary);
+}
