@@ -1,4 +1,4 @@
-<main class="responsive">
+<main>
     <h2>Connect to your Command Station</h2>
 
     <p> This application is part of the <a class="link" href="https://github.com/nic547/DC3S-BT">DC3S-BT project</a>, a open-source DCC command station using "Bluetooth Low Energy"-compatible devices.</p>
@@ -10,6 +10,6 @@
     </p>
 
 <button (click)="connect()" [disabled]="bleService.isLoading() || !bleService.isAvailable()">Connect</button>
-<progress *ngIf="bleService.isLoading()" class="circle"></progress>
+<progress *ngIf="bleService.isLoading()"></progress>
 <article *ngIf="bleService.errorMessage()" class="error">{{bleService.errorMessage()}}</article>
 </main>

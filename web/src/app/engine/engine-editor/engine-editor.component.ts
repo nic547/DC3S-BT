@@ -4,10 +4,12 @@ import { DccFunction, PersistenEngine } from '../types';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data-service/data.service';
+import { AddIconDirective } from '../../ui/add-icon.directive';
+import { RemoveIconDirective } from '../../ui/remove-icon.directive';
 
 @Component({
   selector: 'app-engine-editor',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, AddIconDirective, RemoveIconDirective],
   templateUrl: './engine-editor.component.html',
   styleUrl: './engine-editor.component.css'
 })

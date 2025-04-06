@@ -1,7 +1,7 @@
 .function-number-container {
     display: grid;
     grid-template-columns: 1fr auto auto;
-    align-items: baseline;
+    align-items: center;
 }
 
 .function-element {

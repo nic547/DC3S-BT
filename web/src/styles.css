@@ -10,6 +10,8 @@
     --text-secondary:       light-dark(oklch(0.370 0.013 285.805),  oklch(0.871 0.006 286.286)); /* zinc-700 or zinc-300 */
     --border-color:         light-dark(oklch(0.707 0.022 261.325),  oklch(0.446 0.030 256.802));
 
+    --color-error-background: light-dark(oklch(88.5% 0.062 18.334), oklch(44.4% 0.177 26.899)); /* red-200 or red-800 */
+
     font-size: 1rem;
     font-family: sans-serif;
 
@@ -65,6 +67,12 @@ button.toggle, button.border {
     border-color: var(--border-color);
 }
 
+button:disabled {
+    filter: grayscale(1);
+    color: var(--text-secondary); /* By default the font is really grey, hard to read */
+    cursor: initial;
+}
+
 dialog::backdrop {
     backdrop-filter: blur(1px) brightness(0.375);
 }
@@ -82,6 +90,12 @@ article {
     border-radius: 1rem;
     padding: var(--small-padding);
     margin: var(--small-padding);
+
+    &.error {
+        background-color: var(--color-error-background);
+        border: 1px  solid var(--color-error-background);
+        padding: var(--padding);
+    }
 }
 
 .align-right {
