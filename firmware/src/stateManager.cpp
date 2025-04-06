@@ -4,8 +4,8 @@
 namespace state_manager {
 struct locomotive {
   uint16_t address : 14;
-  uint8_t speed : 5;
-  uint8_t targetSpeed : 5;
+  uint8_t speed : 7;
+  uint8_t targetSpeed : 7;
   uint8_t direction : 1;
   uint8_t targetDirection : 1;
   uint8_t function0_4 : 5;
