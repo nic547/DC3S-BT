@@ -3,10 +3,12 @@ import { StateService } from '../../services/state-service/state.service';
 import { Engine, PersistenEngine as PersistentEngine } from '../types';
 import { DataService } from '../../services/data-service/data.service';
 import { CommonModule } from '@angular/common';
+import { EditIconDirective } from '../../ui/edit-icon.directive';
+import { DeleteIconDirective } from '../../ui/delete-icon.directive';
 
 @Component({
   selector: 'app-engine-selection',
-  imports: [CommonModule],
+  imports: [CommonModule, EditIconDirective, DeleteIconDirective],
   templateUrl: './engine-selection.component.html',
   styleUrl: './engine-selection.component.css'
 })
@@ -43,4 +45,16 @@ export class EngineSelectionComponent implements OnInit, AfterViewInit {
     this.stateService.activateEngine(engine);
     this.close();
   }
+
+  public async deleteEngine(engine: PersistentEngine) {
+    await this.dataService.deleteEngine(engine);
+    this.engines = await this.dataService.getEngines();
+
+  }
+
+  public async editEngine(engine: PersistentEngine) {
+    this.stateService.editingEngine.set(engine);
+    this.close();
+  }
+
 }

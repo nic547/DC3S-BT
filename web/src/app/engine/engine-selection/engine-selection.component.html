@@ -8,12 +8,14 @@
           <button class="small border">{{tag}}</button>
          }
         </p>
-        <nav class="align-right">
+        <nav>
+          <button appDeleteIcon (click)="deleteEngine(engine)"></button>
+          <button appEditIcon (click)="editEngine(engine)"></button>
           <button (click)="select(engine)">Select</button>
         </nav>
       </article>      
     </div>
-    <nav class="align-right">
+    <nav>
       <button class="secondary" (click)="close()">Cancel</button>
       <button (click)="createNewPersistentEngine()">Create New</button>
     </nav>
