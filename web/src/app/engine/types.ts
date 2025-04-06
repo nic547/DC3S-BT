@@ -24,7 +24,7 @@ export class PersistenEngine extends Engine {
         this.notes = updatedEngine.notes;
         this.tags = updatedEngine.tags;
         this.address = updatedEngine.address;
-        this.functions = updatedEngine.functions;
+        this.functions = updatedEngine.functions.map(f => { return Object.assign(new DccFunction(), f); }); // ensure functions are instances of DccFunction
     }
 }
 
