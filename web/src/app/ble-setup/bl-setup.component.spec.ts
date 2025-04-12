@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BLESetupComponent } from './ble-setup.component';
+import BLEServiceToken from '../services/ble-service/ble.interface';
+import { BleFakeService } from '../services/ble-service/ble-fake.service';
 
 describe('BLESetupComponent', () => {
   let component: BLESetupComponent;
@@ -8,7 +10,8 @@ describe('BLESetupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BLESetupComponent]
+      imports: [BLESetupComponent],
+      providers: [{provide: BLEServiceToken, useValue: new BleFakeService()}],
     })
     .compileComponents();
 
