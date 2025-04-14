@@ -23,6 +23,10 @@
     box-sizing: border-box;
 }
 
+label, h1, h2, h3, h4, h5, h6, button {
+    user-select: none;
+}
+
 body {
     color: var(--text-primary);
     background-color: var(--background-primary);
@@ -43,6 +47,13 @@ button {
 
 button.svg {
     padding: calc(var(--padding) - 0.25rem); /* icons are 1.5rem instead of 1rem */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+button.svg-behind {
+    flex-direction: row-reverse;
 }
 
 button.svg > svg {
@@ -100,6 +111,9 @@ article {
 
 .align-right {
     text-align: right;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 div.input {

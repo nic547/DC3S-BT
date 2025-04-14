@@ -9,3 +9,8 @@
     grid-template-columns: 1fr 150px;
     column-gap: 4px;
 }
+
+#tag-container {
+    display: flex;
+    flex-wrap: wrap;
+}

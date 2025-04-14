@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data-service/data.service';
 import { AddIconDirective } from '../../ui/add-icon.directive';
 import { RemoveIconDirective } from '../../ui/remove-icon.directive';
+import { CloseIconDirective } from '../../ui/close-icon.directive';
 
 @Component({
   selector: 'app-engine-editor',
-  imports: [FormsModule, CommonModule, AddIconDirective, RemoveIconDirective],
+  imports: [FormsModule, CommonModule, AddIconDirective, RemoveIconDirective, CloseIconDirective],
   templateUrl: './engine-editor.component.html',
   styleUrl: './engine-editor.component.css'
 })

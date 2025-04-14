@@ -49,6 +49,7 @@
     font-size: 2em;
     font-weight: bold;
     color: var(--text-primary);
+    user-select: none;
 }
 
 #forwards{

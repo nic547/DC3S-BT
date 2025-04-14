@@ -13,16 +13,16 @@
     <div>
         <fieldset>
             <legend>Tags</legend>
-            <button *ngFor="let tag of engine.tags" class="chip small-elevate" (click)="removeTag(tag)">
-                <span>{{tag}}</span>
-                <i>close</i>
-            </button>
-                <div class="input">
-                    <input [(ngModel)]="tagInput" type="text" placeholder=""
-                        (keydown)="handleTagInputKeypress($event)" />
-                    <label>New Tag</label>
-                </div>
-                <button class="s4 m3" (click)="addTag()">Add</button>
+            <div id="tag-container">
+                <button appCloseIcon *ngFor="let tag of engine.tags" class="svg-behind" (click)="removeTag(tag)">
+                    <span>{{tag}}</span>
+                </button>
+            </div>
+            <div class="input">
+                <input [(ngModel)]="tagInput" type="text" placeholder="" (keydown)="handleTagInputKeypress($event)" />
+                <label>New Tag</label>
+            </div>
+            <button (click)="addTag()">Add</button>
         </fieldset>
     </div>
     <fieldset>
@@ -39,7 +39,7 @@
         <div *ngFor="let function of engine.functions" class="function-element">
             <div class="input">
                 <label>F{{function.number}}</label>
-                <input [(ngModel)]="function.description" type="text"  />
+                <input [(ngModel)]="function.description" type="text" />
             </div>
             <div class="input">
                 <label>Duration (ms)</label>
