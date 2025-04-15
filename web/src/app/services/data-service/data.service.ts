@@ -20,6 +20,10 @@ export class DataService {
     })
   }
 
+  async clearAll() {
+    await this.db?.clear('engines')
+  }
+
   async getEngine(key: string): Promise<PersistenEngine|null> {
     let engineObject = await this.db?.get('engines', key)
     return this.rehydrateEngine(engineObject);
