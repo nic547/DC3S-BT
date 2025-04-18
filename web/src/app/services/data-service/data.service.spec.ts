@@ -10,8 +10,8 @@ describe('DataService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(DataService);
     
-    await service.setup();
-    await service.clearAll();
+    let dbName = Math.random().toString(36);
+    await service.setup(dbName);
   });
 
   it('should be created', () => {
@@ -33,6 +33,17 @@ describe('DataService', () => {
 
     let engines = await service.getEngines();
     expect(engines[0]).toBeInstanceOf(PersistenEngine);
+  });
+
+  it('should delete engines when requested', async () => {
+    let engine = new PersistenEngine();
+    await service.addOrUpdateEngine(engine);
+    let engines = await service.getEngines();
+    expect(engines.length).toBe(1);
+
+    await service.deleteEngine(engine);
+    engines = await service.getEngines();
+    expect(engines.length).toBe(0);
   });
 
   it('stored functions should have a display name', async () => {
@@ -59,5 +70,10 @@ describe('DataService', () => {
 
     let loadedEngine = await service.getEngine(engine.id);
     expect(loadedEngine?.name).toBe('Test Engine');
+  });
+
+  it('default database name should be used if no name is provided', async () => {
+    let service = new DataService();
+    expect(service.setup).not.toThrow();
   });
 });
