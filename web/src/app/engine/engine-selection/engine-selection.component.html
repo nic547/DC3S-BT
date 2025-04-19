@@ -10,12 +10,14 @@
         </p>
         <nav>
           <button class="secondary" appDeleteIcon (click)="deleteEngine(engine)"></button>
+          <button class="secondary" appDownloadIcon (click)="exportEngine(engine)"></button>
           <button class="secondary" appEditIcon (click)="editEngine(engine)"></button>
           <button (click)="select(engine)">Select</button>
         </nav>
       </article>
     </div>
     <nav>
+      <button class="secondary" (click)="importEngine()">Import</button>
       <button class="secondary" (click)="close()">Cancel</button>
       <button (click)="createNewPersistentEngine()">Create New</button>
     </nav>

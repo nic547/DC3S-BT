@@ -4,7 +4,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [
+      "web-bluetooth",
+      "wicg-file-system-access"
+    ]
   },
   "files": [
     "src/main.ts"

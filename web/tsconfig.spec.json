@@ -5,7 +5,9 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "types": [
-      "jasmine"
+      "jasmine",
+      "web-bluetooth",
+      "wicg-file-system-access"
     ]
   },
   "include": [
