@@ -12,14 +12,14 @@ export class DataService {
   constructor() {
   }
 
-  async setup() {
-    this.db = await openDB<DC3SDB>('dc3s-db', 1, {
+  async setup(dbName: string = 'dc3s-db') {
+    this.db = await openDB<DC3SDB>(dbName, 1, {
       upgrade(db) {
         db.createObjectStore('engines')
+        console.log('Database upgrade complete');
       }
     })
   }
-
   async getEngine(key: string): Promise<PersistenEngine|null> {
     let engineObject = await this.db?.get('engines', key)
     return this.rehydrateEngine(engineObject);
