@@ -3,7 +3,7 @@
     color-scheme: light dark;
     --color-primary:        light-dark(oklch(0.707 0.165 254.624),  oklch(0.550 0.245 262.881)); /*blue-400 or blue-600 from tailwind */
     --color-primary-alt:    light-dark(oklch(48.8% 0.243 264.376), oklch(80.9% 0.105 251.813)); /*blue-300 or blue-700 from tailwind */
-    --color-secondary:      light-dark(oklch(0.746 0.160 232.661),  oklch(0.588 0.158 241.966)); /* sky-400 or sky-600 */
+    /*--color-secondary:      light-dark(oklch(0.746 0.160 232.661),  oklch(0.588 0.158 241.966)); /* sky-400 or sky-600 */
     --background-primary:   light-dark(oklch(0.967 0.001 286.375),  oklch(0.210 0.006 285.885)); /* zinc-100 or zinc-900 */
     --background-secondary: light-dark(oklch(0.920 0.004 286.320),  oklch(0.274 0.006 286.033)); /* zinc-200 or zinc-800 */
     --text-primary:         light-dark(oklch(0.210 0.006 285.885),  oklch(0.967 0.001 286.375));
@@ -64,16 +64,11 @@ button:active {
     filter: brightness(0.75);
 }
 
-button.secondary {
-    background-color: var(--color-secondary);
-    border-color: var(--color-secondary);
-}
-
 button.small {
     padding:  calc(var(--padding) / 2);
 }
 
-button.toggle, button.border {
+button.secondary {
     background-color: var(--background-secondary);
     border-color: var(--border-color);
 }

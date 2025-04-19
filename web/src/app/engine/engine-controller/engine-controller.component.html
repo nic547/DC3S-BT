@@ -21,12 +21,12 @@
   </div>
   <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed" (input)="setSpeed()" />
   <span id="speed-display">{{engine().speed}}</span>
-  <button appArrowBackIcon id="backwards" (click)="setDirection(false)" [class.toggle]="engine().isForwards"></button>
-  <button appArrowForwardIcon id="forwards" (click)="setDirection(true)" [class.toggle]="!engine().isForwards"></button>
+  <button appArrowBackIcon id="backwards" (click)="setDirection(false)" [class.secondary]="engine().isForwards"></button>
+  <button appArrowForwardIcon id="forwards" (click)="setDirection(true)" [class.secondary]="!engine().isForwards"></button>
   <button id="emergency" disabled="true">E-Stop</button>
 
   <div id="functions" class="scroll">
     <button *ngFor="let f of engine().functions" (click)="toggleFunction(f.number)" class="small"
-      [class.toggle]="!f.isActive">{{f.displayName}}</button>
+      [class.secondary]="!f.isActive">{{f.displayName}}</button>
   </div>
 </article>
