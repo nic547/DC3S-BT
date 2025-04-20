@@ -1,4 +1,4 @@
-<article id="loco-grid" class="border">
+<article id="loco-grid" class="border" (window:resize)="onResize()">
   <div id="address">
 
     @if (isSimpleEngine()) {
@@ -25,7 +25,7 @@
   <button appArrowForwardIcon id="forwards" (click)="setDirection(true)" [class.secondary]="!engine().isForwards"></button>
   <button id="emergency" disabled="true">E-Stop</button>
 
-  <div id="functions" class="scroll">
+  <div id="functions" [class.wide]="wideFunctions()" class="scroll">
     <button *ngFor="let f of engine().functions" (click)="toggleFunction(f.number)" class="small"
       [class.secondary]="!f.isActive">{{f.displayName}}</button>
   </div>

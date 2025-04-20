@@ -15,15 +15,25 @@ import { ArrowBackIconDirective } from '../../ui/arrow-back-icon.directive';
   templateUrl: './engine-controller.component.html',
   styleUrl: './engine-controller.component.css'
 })
-export class EngineControllerComponent {
+export class EngineControllerComponent implements OnInit {
 
   private ble = inject(BLEServiceToken);
+  private static stateService: StateService | null = null;
   private stateService = inject(StateService);
 
   public engine = input.required<Engine>();
   public isSimpleEngine = computed(() => this.engine() instanceof SimpleEngine);
   public persistentEngine = computed(() => this.engine() as PersistentEngine); // bit of a hack to get around type narrowing not really working in the template
+  protected static wideFunctions = signal(false);
 
+  protected wideFunctions = EngineControllerComponent.wideFunctions;
+  protected onResize = EngineControllerComponent.onResize;
+
+  ngOnInit(): void {
+    EngineControllerComponent.stateService = this.stateService;
+    EngineControllerComponent.onResize();
+  }
+  
   async toggleFunction(number: number) {
     this.engine().functions[number].isActive = !this.engine().functions[number].isActive;
     console.log("toggleFunction", number, this.engine().functions[number].isActive);
@@ -52,6 +62,12 @@ export class EngineControllerComponent {
   
   deactivateEngine() {
     this.stateService.deactivateEngine(this.engine());
+    EngineControllerComponent.onResize();
   }
 
+  protected static onResize() {
+    const clientWidth = document.documentElement.clientWidth;
+    const engines = this.stateService?.activeEngines().length ?? 0;
+    clientWidth / engines > 600 ? this.wideFunctions.set(true) : this.wideFunctions.set(false);
+  }
 }
