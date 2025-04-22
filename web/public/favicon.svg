@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<svg width="512" height="512" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+	<linearGradient id="RedGradient" x1="0" x2="0" y1="0" y2="1">
+		<stop offset="0%" stop-color="#FF2020"/>
+		<stop offset="100%" stop-color="#FF4040"/>
+	</linearGradient>
+	<linearGradient id="BlackGradient" x1="0" x2="0" y1="0" y2="1">
+		<stop offset="0%" stop-color="#404040"/>
+		<stop offset="100%" stop-color="#202020"/>
+	</linearGradient>
+	<linearGradient id="BlueGradient" x1="0" x2="0" y1="0" y2="1">
+		<stop offset="0%" stop-color="#87CEEB"/>
+		<stop offset="100%" stop-color="#BFEFFF"/>
+	</linearGradient>
+	<radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:rgb(255,255,255);
+      stop-opacity:1" />
+      <stop offset="100%" stop-color="#FFFF00" stop-opacity="0" />
+    </radialGradient>
+	</defs>
+<path d=" M96 128 l320 0 l16 128 c2 32, 8 96, 8 128 L72 384 C72 352,78 288,80 256" fill="url(#RedGradient)"/>
+<polygon points="92,160 420,160 432,256 80,256" fill="Black"/>
+<polygon points="124,160 388,160 400,256 112,256" fill="url(#BlueGradient)"/>
+<polygon points="96,128 128,96 192,64 320,64 384,96 416,128" fill="#202020"/>
+<path d="M72 384 L440 384 l-8 48 L80 432" fill="url(#BlackGradient)"/>
+</svg>
