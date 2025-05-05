@@ -26,6 +26,7 @@ export class BLEService implements IBLEService {
   isReady = signal(false);
   isAvailable = signal(true);
   errorMessage: WritableSignal<null | string> = signal(null)
+  IsFake = false;
 
   private functionCommand: BluetoothRemoteGATTCharacteristic | null = null;
   private Speed128Command: BluetoothRemoteGATTCharacteristic | null = null;

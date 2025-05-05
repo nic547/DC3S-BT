@@ -4,12 +4,19 @@
     <p> This application is part of the <a class="link" href="https://github.com/nic547/DC3S-BT">DC3S-BT project</a>, a open-source DCC command station using "Bluetooth Low Energy"-compatible devices.</p>
 
     <p>This web application uses a technology called "Web Bluetooth" to connect to a Microcontoller Board running the DC3S-BT firmware.
-        Unfortunately, this technology is not supported by all browsers and operating systems. You generally need to use a chromium-based browser (like Chrome or Edge).
-        This unfortunatly excludes iOS devices (On iOS, other Browsers are merley a coat of paint on top of Safari, which does not support Web Bluetooth).
+        Unfortunately, this technology has only been adopted by chromium-based browsers (like Chrome, Edge, Opera, Brave, etc.).
         See <a class="link" href="https://caniuse.com/web-bluetooth">Can I Use</a> for a detailed overview of supported devices and browsers.
     </p>
 
 <button (click)="connect()" [disabled]="bleService.isLoading() || !bleService.isAvailable()">Connect</button>
 <progress *ngIf="bleService.isLoading()"></progress>
+<p>
+    @if (!bleService.IsFake) {
+        <a href="/?fakeBle=true">Run without Bluetooth (for testing)</a>
+    } 
+    @else {
+        <a href="/?fakeBle=false">Switch back to Bluetooth</a>
+    }
+</p>
 <article *ngIf="bleService.errorMessage()" class="error">{{bleService.errorMessage()}}</article>
 </main>

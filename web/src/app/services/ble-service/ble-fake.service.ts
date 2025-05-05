@@ -14,6 +14,7 @@ export class BleFakeService implements IBLEService {
   isReady = signal(false);
   isAvailable = signal(true);
   errorMessage: WritableSignal<null | string> = signal(null)
+  IsFake = true;
 
   async setup() {
     console.log("BLEService setup");

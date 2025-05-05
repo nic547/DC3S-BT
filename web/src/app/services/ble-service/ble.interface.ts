@@ -10,6 +10,8 @@ export interface IBLEService {
     isAvailable: Signal<boolean>
     errorMessage: Signal<null | string>;
 
+    IsFake: boolean;
+
 }
 
  const BLEServiceToken = new InjectionToken<IBLEService>('IBLEService');
