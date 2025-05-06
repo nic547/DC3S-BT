@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "patch-webmanifest": "node scripts/patch-webmanifest.mjs"
   },
   "private": true,
   "dependencies": {

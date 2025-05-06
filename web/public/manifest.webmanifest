@@ -1,6 +1,6 @@
 {
-  "name": "DC3S-BT",
-  "short_name": "DC3S",
+  "name": "DC3S-BT Development",
+  "short_name": "DC3S Dev",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
