@@ -34,8 +34,8 @@ export class DataService {
     await this.db?.delete('engines', engine.id)
   }
 
-  async getEngines(): Promise<PersistenEngine[]> {
-    const engines = await this.db?.getAll('engines')
+  async getEngines(searchTerm: string = ''): Promise<PersistenEngine[]> {
+    const engines = (await this.db?.getAll('engines'))?.filter(engine => engine.name.includes(searchTerm) || engine.tags.some(tag => tag.includes(searchTerm)));
     return engines?.map(engine => this.rehydrateEngine(engine)) || [];
   }
 

@@ -1,24 +1,28 @@
 <dialog #selectionDialog (cancel)="close()">
-    <h2>Select Engine</h2>
-    <div class="selectionGrid">
-      <article *ngFor="let engine of engines">
-        <h3 class="small border">{{engine.name}}</h3>
-        <p>
-         @for(tag of engine.tags; track tag) {
-          <button class="small secondary">{{tag}}</button>
-         }
-        </p>
-        <nav>
-          <button class="secondary" appDeleteIcon (click)="deleteEngine(engine)"></button>
-          <button class="secondary" appDownloadIcon (click)="exportEngine(engine)"></button>
-          <button class="secondary" appEditIcon (click)="editEngine(engine)"></button>
-          <button (click)="select(engine)">Select</button>
-        </nav>
-      </article>
-    </div>
-    <nav>
-      <button class="secondary" (click)="importEngine()">Import</button>
-      <button class="secondary" (click)="close()">Cancel</button>
-      <button (click)="createNewPersistentEngine()">Create New</button>
-    </nav>
+  <h2>Select Engine</h2>
+  <div class="input">
+    <input type="search" [(ngModel)]="searchTerm"/>
+    <label>Search</label>
+  </div>
+  <div class="selectionGrid">
+    <article *ngFor="let engine of engines()">
+      <h3 class="small border">{{engine.name}}</h3>
+      <p>
+        @for(tag of engine.tags; track tag) {
+        <button class="small secondary" (click)="setSearchTerm(tag)">{{tag}}</button>
+        }
+      </p>
+      <nav>
+        <button class="secondary" appDeleteIcon (click)="deleteEngine(engine)"></button>
+        <button class="secondary" appDownloadIcon (click)="exportEngine(engine)"></button>
+        <button class="secondary" appEditIcon (click)="editEngine(engine)"></button>
+        <button (click)="select(engine)">Select</button>
+      </nav>
+    </article>
+  </div>
+  <nav>
+    <button class="secondary" (click)="importEngine()">Import</button>
+    <button class="secondary" (click)="close()">Cancel</button>
+    <button (click)="createNewPersistentEngine()">Create New</button>
+  </nav>
 </dialog>

@@ -43,6 +43,14 @@ button {
     margin: 0.25rem;
     cursor: pointer;
     box-sizing: border-box;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+
+    &:active {
+        filter: brightness(0.75);
+    }
 }
 
 button.svg {
@@ -58,10 +66,6 @@ button.svg-behind {
 
 button.svg > svg {
     display: block; /* Somehow the icons buttons aren't square otherwise */
-}
-
-button:active {
-    filter: brightness(0.75);
 }
 
 button.small {
@@ -110,6 +114,7 @@ article {
     align-items: center;
     flex-direction: row;
 }
+
 
 div.input {
 

@@ -31,3 +31,7 @@ nav {
     display: flex;
     justify-self: end;
 }
+
+.input {
+    width: 300px;
+}

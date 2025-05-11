@@ -1,20 +1,19 @@
-import { AfterViewInit, Component, ElementRef, inject, input, model, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, input, model, OnInit, Resource, Signal, signal, ViewChild, resource, linkedSignal } from '@angular/core';
 import { StateService } from '../../services/state-service/state.service';
 import { Engine, PersistenEngine as PersistentEngine } from '../types';
 import { DataService } from '../../services/data-service/data.service';
 import { CommonModule } from '@angular/common';
-import { EditIconDirective } from '../../ui/edit-icon.directive';
-import { DeleteIconDirective } from '../../ui/delete-icon.directive';
-import { DownloadIconDirective } from '../../ui/download-icon.directive';
+import { IconModule } from '../../ui/icon.module';
 import { TransferService } from '../../services/transfer-service/transfer.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-engine-selection',
-  imports: [CommonModule, EditIconDirective, DeleteIconDirective, DownloadIconDirective],
+  imports: [CommonModule, FormsModule, IconModule],
   templateUrl: './engine-selection.component.html',
   styleUrl: './engine-selection.component.css'
 })
-export class EngineSelectionComponent implements OnInit, AfterViewInit {
+export class EngineSelectionComponent implements AfterViewInit {
 
 
   public showSelection = model.required<boolean>()
@@ -23,13 +22,30 @@ export class EngineSelectionComponent implements OnInit, AfterViewInit {
   private dataService = inject(DataService)
   private transferService = inject(TransferService)
 
-  protected engines: PersistentEngine[] = []
+  protected enginesResource: Resource<PersistentEngine[] | undefined> = resource({
+    request: () => ({searchTerm: this.searchTerm()}),
+    loader: async ({request}) => {
+      return await this.dataService.getEngines(request.searchTerm);
+    }
+  })
+
+  private previousEngines: PersistentEngine[] = []
+
+  // Workaround for the fact that the enginesResource is undefined while reloading
+  // https://github.com/angular/angular/issues/58602
+  // TODO: Remove this when the previous value is available, set empty array as default value intstead
+  protected engines: Signal<PersistentEngine[]> = computed(() => {
+    
+    if (this.enginesResource.hasValue()) {
+      this.previousEngines = this.enginesResource.value();
+    }
+    return this.previousEngines
+
+    });
+
+  protected searchTerm = signal<string>('')
 
   @ViewChild('selectionDialog') engineSelectionDialog: ElementRef<HTMLDialogElement> | null = null
-
-  async ngOnInit(): Promise<void> {
-    this.engines = await this.dataService.getEngines();
-  }
 
   async ngAfterViewInit(): Promise<void> {
     this.engineSelectionDialog?.nativeElement.showModal();
@@ -51,7 +67,7 @@ export class EngineSelectionComponent implements OnInit, AfterViewInit {
 
   public async deleteEngine(engine: PersistentEngine) {
     await this.dataService.deleteEngine(engine);
-    this.engines = await this.dataService.getEngines();
+    this.enginesResource.reload();
 
   }
 
@@ -75,6 +91,17 @@ export class EngineSelectionComponent implements OnInit, AfterViewInit {
 
     document.body.removeChild(element);
   }
+
+  public async setSearchTerm(searchTerm: string) {
+    this.searchTerm.set(searchTerm);
+    this.enginesResource.reload();
+  }
+
+  public clearSearchTerm() {
+    this.searchTerm.set('');
+    this.enginesResource.reload();
+  }
+
 
   public getSaveishName(name: string): string {
     return name.replace(/[^a-z0-9().]/gi, '_');
@@ -112,6 +139,6 @@ export class EngineSelectionComponent implements OnInit, AfterViewInit {
       console.error('Error importing engine:', error);
       // You might want to add some user-facing error handling here
     }
-    this.engines = await this.dataService.getEngines();
+    this.enginesResource.reload();
   }
 }
