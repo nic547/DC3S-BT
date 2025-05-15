@@ -3,6 +3,7 @@ import { EngineControllerComponent } from './engine-controller.component';
 import BLEServiceToken from '../../services/ble-service/ble.interface';
 import { BleFakeService } from '../../services/ble-service/ble-fake.service';
 import { SimpleEngine } from '../types';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 describe('LocoControlComponent', () => {
   let component: EngineControllerComponent;
@@ -19,7 +20,7 @@ describe('LocoControlComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [EngineControllerComponent],
-      providers: [{provide: BLEServiceToken, useValue: new BleFakeService()}],
+      providers: [{provide: BLEServiceToken, useValue: new BleFakeService()}, provideExperimentalZonelessChangeDetection()],
     })
     .compileComponents();
 

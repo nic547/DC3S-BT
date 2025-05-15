@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { EngineSelectionComponent } from './engine-selection.component';
 
 describe('EngineSelectionComponent', () => {
@@ -8,7 +8,8 @@ describe('EngineSelectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EngineSelectionComponent]
+      imports: [EngineSelectionComponent],
+      providers: [provideExperimentalZonelessChangeDetection()]
     })
     .compileComponents();
 

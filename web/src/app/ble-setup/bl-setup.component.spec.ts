@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { BLESetupComponent } from './ble-setup.component';
 import BLEServiceToken from '../services/ble-service/ble.interface';
 import { BleFakeService } from '../services/ble-service/ble-fake.service';
@@ -11,7 +11,10 @@ describe('BLESetupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BLESetupComponent],
-      providers: [{provide: BLEServiceToken, useValue: new BleFakeService()}],
+      providers: [
+        {provide: BLEServiceToken, useValue: new BleFakeService()},
+        provideExperimentalZonelessChangeDetection()
+      ],
     })
     .compileComponents();
 
