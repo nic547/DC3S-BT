@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { deleteDB } from 'idb';
 import { DataService } from './data.service';
 import { DccFunction, PersistenEngine } from '../../engine/types';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
@@ -15,6 +14,7 @@ describe('DataService', () => {
     
     let dbName = Math.random().toString(36);
     await service.setup(dbName);
+
   });
 
   it('should be created', () => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
-import { DccFunction, Engine, PersistenEngine } from '../../engine/types';
+import { DccFunction, PersistenEngine } from '../../engine/types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +12,18 @@ export class DataService {
   constructor() {
   }
 
-  async setup(dbName: string = 'dc3s-db') {
+  // Mostly for the tests - somehow doesn't work reliably when not an arrow function
+  setup = async (dbName: string = 'dc3s-db'): Promise<void> => {
     this.db = await openDB<DC3SDB>(dbName, 1, {
       upgrade(db) {
-        db.createObjectStore('engines')
-        console.log('Database upgrade complete');
+        db?.createObjectStore('engines')
       }
-    })
+    });
+    console.log('Database upgrade complete');
   }
-  async getEngine(key: string): Promise<PersistenEngine|null> {
+
+
+  async getEngine(key: string): Promise<PersistenEngine | null> {
     let engineObject = await this.db?.get('engines', key)
     return this.rehydrateEngine(engineObject);
   }
@@ -45,14 +48,14 @@ export class DataService {
   private rehydrateEngine(engine: PersistenEngine | undefined | null): PersistenEngine | null {
     if (!engine) return null;
     const instance = new PersistenEngine();
-  
+
     // Only copy properties that exist in the class prototype
     const prototypeKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(instance));
     const propertyKeys = Object.getOwnPropertyNames(instance);
-    
+
     // Combine both property and method names (excluding constructor)
     const validKeys = [...propertyKeys, ...prototypeKeys.filter(key => key !== 'constructor')];
-    
+
     // Copy only the valid properties
     for (const key of Object.keys(engine)) {
       if (validKeys.includes(key)) {
@@ -64,14 +67,14 @@ export class DataService {
     instance.functions = engine.functions.map((f: any) => {
       return Object.assign(new DccFunction, f);
     });
-    
+
     return instance;
   }
 }
 
 interface DC3SDB extends DBSchema {
-   'engines': {
+  'engines': {
     key: string;
     value: PersistenEngine;
-   }
+  }
 }
