@@ -17,6 +17,8 @@
 
     --padding: 0.75rem;
     --small-padding: 0.25rem;
+
+    --engine-controller-width: 400px;
 }
 
 * {
@@ -35,7 +37,7 @@ body {
 button {
     background-color: var(--color-primary);
     border-width: 0.25rem;
-    border-radius: 0.5rem;
+    border-radius: 0.25rem;
     border: 1px solid var(--color-primary);
     font-size: 1rem;
     line-height: 1;
@@ -90,14 +92,14 @@ dialog::backdrop {
 dialog {
     min-width: min(600px, 100dvw);
     border-width: 1px;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     border-color: var(--border-color);
     background-color: var(--background-primary);
 }
 
 article {
     border: 1px solid var(--border-color);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     padding: var(--small-padding);
     margin: var(--small-padding);
 
@@ -154,6 +156,6 @@ div.input {
 
 fieldset {
     border: 1px solid var(--border-color);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     color: var(--text-secondary);
 }

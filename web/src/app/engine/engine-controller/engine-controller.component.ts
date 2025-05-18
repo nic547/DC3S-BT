@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, input, OnInit, signal, ViewChild, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import BLEServiceToken from '../../services/ble-service/ble.interface';
@@ -17,6 +17,7 @@ import { ArrowBackIconDirective } from '../../ui/arrow-back-icon.directive';
 })
 export class EngineControllerComponent implements OnInit {
 
+  @ViewChild('speedSlider') speedSlider: ElementRef<HTMLInputElement> | undefined;
   private ble = inject(BLEServiceToken);
   private static stateService: StateService | null = null;
   private stateService = inject(StateService);
@@ -44,6 +45,7 @@ export class EngineControllerComponent implements OnInit {
     this.engine().speed = 0;
     // Bit of a hack to get the slider to update
     (document.getElementById("speedSlider") as HTMLInputElement).value = "0";
+    this.updateSliderGradient();
 
     this.engine().isForwards = forward;
     
@@ -54,6 +56,8 @@ export class EngineControllerComponent implements OnInit {
   async setSpeed() {
     console.log("setSpeed", this.engine().speed, this.engine().isForwards);
     await this.ble.setSpeed128(this.engine().address, this.engine().speed, this.engine().isForwards);
+
+    this.updateSliderGradient();
   }
 
   editEngine() {
@@ -65,9 +69,25 @@ export class EngineControllerComponent implements OnInit {
     EngineControllerComponent.onResize();
   }
 
+  protected updateSliderGradient() {
+    const value = this.engine().speed / 126 * 100;
+    this.speedSlider?.nativeElement.style.setProperty('--value', `${value}%`);
+  }
+
   protected static onResize() {
-    const clientWidth = document.documentElement.clientWidth;
+    const clientWidth = window.innerWidth;
     const engines = this.stateService?.activeEngines().length ?? 0;
-    clientWidth / engines > 600 ? this.wideFunctions.set(true) : this.wideFunctions.set(false);
+    let availableWidthPerElement = clientWidth / engines;
+    availableWidthPerElement > 600 ? this.wideFunctions.set(true) : this.wideFunctions.set(false);
+
+    if (availableWidthPerElement > 800) {
+      availableWidthPerElement = 800;
+    }
+    
+    if (availableWidthPerElement < 400) {
+      availableWidthPerElement = 400;
+    }
+
+    document.documentElement.style.setProperty('--engine-controller-width', `${availableWidthPerElement}px`);
   }
 }

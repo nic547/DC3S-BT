@@ -11,25 +11,27 @@
 }
 
 
-#loco-grid{
+#loco-grid {
     display: grid;
-    grid-template-areas:    "name name name"
-                            "speed speed functions"
-                            "display display functions"
-                            "backwards forwards functions"
-                            "emergency emergency functions";
+    grid-template-areas: "name name name"
+        "speed speed functions"
+        "display display functions"
+        "backwards forwards functions"
+        "emergency emergency functions";
 
-    grid-template-columns: 1fr 1fr 10fr;
-    grid-template-rows:    auto 1fr auto auto auto;
-    height: calc(100dvh - 2 * var(--small-padding) - 18px); /* 18px is to hack around the scrollbar https://issues.chromium.org/issues/372425128 */
-    min-width: min(400px, 90dvw);
+    grid-template-columns: calc(2.625rem + 8px) calc(2.625rem + 8px) 1fr;
+    width: calc(var(--engine-controller-width) - 2 * var(--small-padding));
+    grid-template-rows: auto 1fr auto auto auto;
+    height: calc(100dvh - 2 * var(--small-padding) - 18px);
+    /* 18px is to hack around the scrollbar https://issues.chromium.org/issues/372425128 */
     box-sizing: border-box;
     gap: 4px;
 }
 
-#address{
+#address {
     grid-area: name;
-    margin-bottom: 16px; /* default is even larger - revist later*/
+    margin-bottom: 16px;
+    /* default is even larger - revist later*/
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
@@ -41,11 +43,39 @@
     direction: rtl;
     vertical-align: middle;
     justify-self: center;
-    height: max-content;
-    height: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--background-primary);
+    --value: 0%;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+
+    &::-webkit-slider-runnable-track {
+        width: 1em;
+        cursor: pointer;
+        background: linear-gradient(0deg, var(--color-primary) var(--value), var(--background-secondary) var(--value));
+        border-radius: 1em;
+    }
+
+   &::-webkit-slider-thumb {
+        height: 2em;
+        width: 2em;
+        border-radius: 50%;
+        background: var(--color-primary);
+        cursor: pointer;
+        -webkit-appearance: none;
+        transform: translateX(-25%);
+    }
 }
 
-#speed-display{
+
+#speed-display {
     grid-area: display;
     text-align: center;
     align-content: center;
@@ -55,18 +85,18 @@
     user-select: none;
 }
 
-#forwards{
+#forwards {
     grid-area: forwards;
 }
 
-#backwards{
+#backwards {
     grid-area: backwards;
 }
 
-#emergency{
+#emergency {
     grid-area: emergency;
 }
 
-#editclosediv > button {
+#editclosediv>button {
     margin-right: 0px;
 }

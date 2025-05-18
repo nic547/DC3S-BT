@@ -19,7 +19,7 @@
       </button>
     </div>
   </div>
-  <input id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed" (input)="setSpeed()" />
+  <input #speedSlider id="speedSlider" type="range" min="0" max="126" step="1" [(ngModel)]="engine().speed" (input)="setSpeed()" />
   <span id="speed-display">{{engine().speed}}</span>
   <button appArrowBackIcon id="backwards" (click)="setDirection(false)" [class.secondary]="engine().isForwards"></button>
   <button appArrowForwardIcon id="forwards" (click)="setDirection(true)" [class.secondary]="!engine().isForwards"></button>
