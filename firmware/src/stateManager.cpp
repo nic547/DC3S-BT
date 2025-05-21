@@ -146,40 +146,73 @@ void checkForChanges(state_manager::locomotive &loco, bool &hasFoundChanges) {
 }
 
 void generateFunction21_28Command(state_manager::locomotive &loco) {
-  signalGeneration::nextData[0] = loco.address;
-  signalGeneration::nextData[1] = 0b1101'1111;
-  signalGeneration::nextData[2] = loco.targetFunction21_28;
-  signalGeneration::nextDataLenght = 3;
-  signalGeneration::nextDataIsReady = true;
+  if (loco.address < 128) {
+    signalGeneration::nextData[0] = loco.address;
+    signalGeneration::nextData[1] = 0b1101'1111;
+    signalGeneration::nextData[2] = loco.targetFunction21_28;
+    signalGeneration::nextDataLenght = 3;
+    signalGeneration::nextDataIsReady = true;
+  } else {
+    signalGeneration::nextData[0] = loco.address >> 8 | 0b1100'0000;
+    signalGeneration::nextData[1] = loco.address;
+    signalGeneration::nextData[2] = 0b1101'1111;
+    signalGeneration::nextData[3] = loco.targetFunction21_28;
+    signalGeneration::nextDataLenght = 4;
+    signalGeneration::nextDataIsReady = true;
+  }
 
   loco.function21_28 = loco.targetFunction21_28;
 }
 
 void generateFunction13_20Command(state_manager::locomotive &loco) {
-  signalGeneration::nextData[0] = loco.address;
-  signalGeneration::nextData[1] = 0b1101'1110;
-  signalGeneration::nextData[2] = loco.targetFunction13_20;
-  signalGeneration::nextDataLenght = 3;
-  signalGeneration::nextDataIsReady = true;
+  if (loco.address < 128) {
+    signalGeneration::nextData[0] = loco.address;
+    signalGeneration::nextData[1] = 0b1101'1110;
+    signalGeneration::nextData[2] = loco.targetFunction13_20;
+    signalGeneration::nextDataLenght = 3;
+    signalGeneration::nextDataIsReady = true;
+  } else {
+    signalGeneration::nextData[0] = loco.address >> 8 | 0b1100'0000;
+    signalGeneration::nextData[1] = loco.address;
+    signalGeneration::nextData[2] = 0b1101'1110;
+    signalGeneration::nextData[3] = loco.targetFunction13_20;
+    signalGeneration::nextDataLenght = 4;
+    signalGeneration::nextDataIsReady = true;
+  }
 
   loco.function13_20 = loco.targetFunction13_20;
 }
 
 void generateFunction9_12Command(state_manager::locomotive &loco) {
-
-  signalGeneration::nextData[0] = loco.address;
-  signalGeneration::nextData[1] = 0b1010'0000 | loco.targetFunction9_12;
-  signalGeneration::nextDataLenght = 2;
-  signalGeneration::nextDataIsReady = true;
+  if (loco.address < 128) {
+    signalGeneration::nextData[0] = loco.address;
+    signalGeneration::nextData[1] = 0b1010'0000 | loco.targetFunction9_12;
+    signalGeneration::nextDataLenght = 2;
+    signalGeneration::nextDataIsReady = true;
+  } else {
+    signalGeneration::nextData[0] = loco.address >> 8 | 0b1100'0000;
+    signalGeneration::nextData[1] = loco.address;
+    signalGeneration::nextData[2] = 0b1010'0000 | loco.targetFunction9_12;
+    signalGeneration::nextDataLenght = 3;
+    signalGeneration::nextDataIsReady = true;
+  }
 
   loco.function9_12 = loco.targetFunction9_12;
 }
 
 void generateFunctions5_8Command(state_manager::locomotive &loco) {
-  signalGeneration::nextData[0] = loco.address;
-  signalGeneration::nextData[1] = 0b1011'0000 | loco.targetFunction5_8;
-  signalGeneration::nextDataLenght = 2;
-  signalGeneration::nextDataIsReady = true;
+  if (loco.address < 128) {
+    signalGeneration::nextData[0] = loco.address;
+    signalGeneration::nextData[1] = 0b1011'0000 | loco.targetFunction5_8;
+    signalGeneration::nextDataLenght = 2;
+    signalGeneration::nextDataIsReady = true;
+  } else {
+    signalGeneration::nextData[0] = loco.address >> 8 | 0b1100'0000;
+    signalGeneration::nextData[1] = loco.address;
+    signalGeneration::nextData[2] = 0b1011'0000 | loco.targetFunction5_8;
+    signalGeneration::nextDataLenght = 3;
+    signalGeneration::nextDataIsReady = true;
+  }
 
   loco.function5_8 = loco.targetFunction5_8;
 }
@@ -267,11 +300,21 @@ void setSpeed(uint16_t address, uint8_t speed, bool forwards) {
 }
 
 void generateSpeedCommand(locomotive &loco) {
-  signalGeneration::nextData[0] = loco.address;
-  signalGeneration::nextData[1] = 0b0011'1111;
-  signalGeneration::nextData[2] = loco.targetSpeed | (loco.targetDirection << 7);
-  signalGeneration::nextDataLenght = 3;
-  signalGeneration::nextDataIsReady = true;
+
+  if (loco.address < 128) {
+    signalGeneration::nextData[0] = loco.address;
+    signalGeneration::nextData[1] = 0b0011'1111;
+    signalGeneration::nextData[2] = loco.targetSpeed | (loco.targetDirection << 7);
+    signalGeneration::nextDataLenght = 3;
+    signalGeneration::nextDataIsReady = true;
+  } else {
+    signalGeneration::nextData[0] = loco.address >> 8 | 0b1100'0000;
+    signalGeneration::nextData[1] = loco.address;
+    signalGeneration::nextData[2] = 0b0011'1111;
+    signalGeneration::nextData[3] = loco.targetSpeed | (loco.targetDirection << 7);
+    signalGeneration::nextDataLenght = 4;
+    signalGeneration::nextDataIsReady = true;
+  }
 
   loco.speed = loco.targetSpeed;
   loco.direction = loco.targetDirection;
