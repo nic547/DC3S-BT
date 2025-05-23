@@ -35,3 +35,8 @@ nav {
 .input {
     width: 300px;
 }
+
+.toolbar {
+    display: flex;
+    align-items: center;
+}

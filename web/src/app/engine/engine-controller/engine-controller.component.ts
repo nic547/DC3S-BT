@@ -8,6 +8,7 @@ import { EditIconDirective } from '../../ui/edit-icon.directive';
 import { CloseIconDirective } from '../../ui/close-icon.directive';
 import { ArrowForwardIconDirective } from '../../ui/arrow-forward-icon.directive';
 import { ArrowBackIconDirective } from '../../ui/arrow-back-icon.directive';
+import { DataService } from '../../services/data-service/data.service';
 
 @Component({
   selector: 'app-engine-controller',
@@ -19,6 +20,7 @@ export class EngineControllerComponent implements OnInit {
 
   @ViewChild('speedSlider') speedSlider: ElementRef<HTMLInputElement> | undefined;
   private ble = inject(BLEServiceToken);
+  private data = inject(DataService);
   private static stateService: StateService | null = null;
   private stateService = inject(StateService);
 
@@ -39,6 +41,10 @@ export class EngineControllerComponent implements OnInit {
     this.engine().functions[number].isActive = !this.engine().functions[number].isActive;
     console.log("toggleFunction", number, this.engine().functions[number].isActive);
     await this.ble.setFunction(this.engine().address, number, this.engine().functions[number].isActive);
+    
+    if (!this.isSimpleEngine()) {
+    await this.data.addOrUpdateEngine(this.persistentEngine());
+    }
   }
 
   async setDirection(forward: boolean) {
@@ -51,6 +57,9 @@ export class EngineControllerComponent implements OnInit {
     
     console.log("setDirection",this.engine().speed, forward);
     await this.ble.setSpeed128(this.engine().address, this.engine().speed, forward);
+    if (!this.isSimpleEngine()) {
+    await this.data.addOrUpdateEngine(this.persistentEngine());
+    }
   }
 
   async setSpeed() {
@@ -58,6 +67,9 @@ export class EngineControllerComponent implements OnInit {
     await this.ble.setSpeed128(this.engine().address, this.engine().speed, this.engine().isForwards);
 
     this.updateSliderGradient();
+    if (!this.isSimpleEngine()) {
+    await this.data.addOrUpdateEngine(this.persistentEngine());
+    }
   }
 
   editEngine() {

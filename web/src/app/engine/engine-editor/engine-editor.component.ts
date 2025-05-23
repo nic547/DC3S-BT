@@ -42,6 +42,7 @@ export class EngineEditorComponent implements OnInit, AfterViewInit {
   }
 
   async save() {
+    this.engine.lastModified = new Date();
     let existingEngine = await this.dataService.getEngine(this.engine.id);
     if (existingEngine) {
       existingEngine.updateWith(this.engine);

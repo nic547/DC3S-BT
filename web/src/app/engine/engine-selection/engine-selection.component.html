@@ -1,8 +1,19 @@
 <dialog #selectionDialog (cancel)="close()">
   <h2>Select Engine</h2>
-  <div class="input">
-    <input type="search" [(ngModel)]="searchTerm"/>
-    <label>Search</label>
+  <div class="toolbar">
+    <div class="input">
+      <input type="search" [(ngModel)]="searchTerm"/>
+      <label>Search</label>
+    </div>
+    <select [(ngModel)]="sortKey">
+      <option value="lastUsed">Last Used</option>
+      <option value="name">Name</option>
+      <option value="lastModified">Last modified</option>
+      <option value="created">Created</option>
+      <option value="address">Address</option>
+    </select>
+    <input type="checkbox" [(ngModel)]="desc"/>
+    <label>Descending</label>
   </div>
   <div class="selectionGrid">
     <article *ngFor="let engine of engines()">

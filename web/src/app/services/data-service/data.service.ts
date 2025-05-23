@@ -29,7 +29,11 @@ export class DataService {
   }
 
   async addOrUpdateEngine(engine: PersistenEngine): Promise<void> {
-    engine.lastModified = new Date();
+    engine.lastUsed = new Date();
+    await this.db?.put('engines', engine, engine.id)
+  }
+
+  async updateLastUsed(engine: PersistenEngine): Promise<void> {
     await this.db?.put('engines', engine, engine.id)
   }
 
@@ -37,8 +41,14 @@ export class DataService {
     await this.db?.delete('engines', engine.id)
   }
 
-  async getEngines(searchTerm: string = ''): Promise<PersistenEngine[]> {
-    const engines = (await this.db?.getAll('engines'))?.filter(engine => engine.name.includes(searchTerm) || engine.tags.some(tag => tag.includes(searchTerm)));
+  async getEngines(searchTerm: string = '', sortKey: 'lastUsed' | 'name' | 'created' | 'address' = 'lastUsed', desc: boolean = true): Promise<PersistenEngine[]> {
+    const engines = (await this.db?.getAll('engines'))
+    ?.filter(engine => engine.name.includes(searchTerm) || engine.tags.some(tag => tag.includes(searchTerm)))
+    ?.sort((a, b) => {
+      if (a[sortKey] < b[sortKey]) return desc ? 1 : -1;
+      if (a[sortKey] > b[sortKey]) return desc ? -1 : 1;
+      return 0;
+    });
     return engines?.map(engine => this.rehydrateEngine(engine)) || [];
   }
 

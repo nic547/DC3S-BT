@@ -23,9 +23,9 @@ export class EngineSelectionComponent implements AfterViewInit {
   private transferService = inject(TransferService)
 
   protected enginesResource: Resource<PersistentEngine[] | undefined> = resource({
-    request: () => ({searchTerm: this.searchTerm()}),
+    request: () => ({searchTerm: this.searchTerm(), sortKey: this.sortKey(), desc: this.desc()}),
     loader: async ({request}) => {
-      return await this.dataService.getEngines(request.searchTerm);
+      return await this.dataService.getEngines(request.searchTerm, request.sortKey, request.desc);
     }
   })
 
@@ -44,6 +44,8 @@ export class EngineSelectionComponent implements AfterViewInit {
     });
 
   protected searchTerm = signal<string>('')
+  protected sortKey = signal<'lastUsed' | 'name' | 'created' | 'address'>('lastUsed')
+  protected desc = signal<boolean>(true)
 
   @ViewChild('selectionDialog') engineSelectionDialog: ElementRef<HTMLDialogElement> | null = null
 
