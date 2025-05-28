@@ -9,24 +9,32 @@ export class TransferService {
   constructor() { }
 
   public async exportEngine(engine: PersistenEngine): Promise<string> {
-    const json = JSON.stringify(engine);
+    const json = JSON.stringify([engine]);
+    return await this.compressString(json);
+  }
+
+  public async exportEngines(engines: PersistenEngine[]): Promise<string> {
+    const json = JSON.stringify(engines);
+    return await this.compressString(json);
+  }
+
+  private async compressString(json: string): Promise<string> {
     const blob = new Blob([json], { type: 'application/json' });
     let cs = new CompressionStream('gzip');
     const compressedResponse = await new Response(blob.stream().pipeThrough(cs));
     const responseBlob = await compressedResponse.blob();
 
     const buffer = await responseBlob.arrayBuffer();
-        
-        const compressedBase64 = btoa(
-          String.fromCharCode(
-            ...new Uint8Array(buffer)
-          )
-        );        
 
-        return compressedBase64;
+    const compressedBase64 = btoa(
+      String.fromCharCode(
+        ...new Uint8Array(buffer)
+      )
+    );
+
+    return compressedBase64;
   }
-
-  public async importEngine(file: File): Promise<PersistenEngine> {
+  public async importEngine(file: File): Promise<PersistenEngine[]> {
     const arrayBuffer = await file.arrayBuffer();
     const compressedData = new Uint8Array(arrayBuffer);
     
@@ -44,22 +52,29 @@ export class TransferService {
     const jsonText = await decompressedResponse.text();
     
     try {
-      // Parse the JSON into a PersistentEngine object
-      const engineData = JSON.parse(jsonText);
-      const engine = new PersistenEngine();
+      // Parse the JSON into an array of PersistentEngine objects
+      const engineDataArray = JSON.parse(jsonText);
       
-      // Copy properties from imported data to the new engine
-      Object.assign(engine, engineData);
+      const engines: PersistenEngine[] = [];
       
-      // Ensure the engine has a new ID to avoid conflicts
-      engine.id = crypto.randomUUID();
-      engine.created = new Date();
-      engine.lastModified = new Date();
-      engine.lastUsed = new Date();
+      for (const engineData of engineDataArray) {
+        const engine = new PersistenEngine();
+        
+        // Copy properties from imported data to the new engine
+        Object.assign(engine, engineData);
+        
+        // Ensure the engine has a new ID to avoid conflicts
+        engine.id = crypto.randomUUID();
+        engine.created = new Date();
+        engine.lastModified = new Date();
+        engine.lastUsed = new Date();
+        
+        engines.push(engine);
+      }
       
-      return engine;
+      return engines;
     } catch (error) {
-      console.error('Error parsing imported engine:', error);
+      console.error('Error parsing imported engines:', error);
       throw new Error('Invalid engine file format');
     }
   }

@@ -80,11 +80,26 @@ export class EngineSelectionComponent implements AfterViewInit {
 
   public async exportEngine(engine: PersistentEngine) {
     const text = await this.transferService.exportEngine(engine);
-    console.log(text);
 
     var element = document.createElement('a');
     element.setAttribute('href', 'data:application/gzip;base64,' + text);
     element.setAttribute('download', this.getSaveishName(engine.name) + '.json.gz');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  public async exportAllEngines() {
+    const engines = await this.dataService.getEngines();
+    const text = await this.transferService.exportEngines(engines);
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:application/gzip;base64,' + text);
+    element.setAttribute('download','dc3s_engines.json.gz');
 
     element.style.display = 'none';
     document.body.appendChild(element);
@@ -106,7 +121,7 @@ export class EngineSelectionComponent implements AfterViewInit {
 
 
   public getSaveishName(name: string): string {
-    return name.replace(/[^a-z0-9().]/gi, '_');
+    return name.replace(/[\/\\.<>:*"?|]/gi, '_');
   }
 
   public async importEngine() {
@@ -129,12 +144,13 @@ export class EngineSelectionComponent implements AfterViewInit {
       if (fileHandlers.length > 0) {
         const fileHandler = fileHandlers[0];
         const file = await fileHandler.getFile();
+          // Use the transfer service to decompress and parse the file
+        const importedEngines = await this.transferService.importEngine(file);
         
-        // Use the transfer service to decompress and parse the file
-        const importedEngine = await this.transferService.importEngine(file);
-        
-        // Save the imported engine
-        await this.dataService.addOrUpdateEngine(importedEngine);
+        // Save all imported engines
+        for (const engine of importedEngines) {
+          await this.dataService.addOrUpdateEngine(engine);
+        }
         
       }
     } catch (error) {

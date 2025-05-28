@@ -44,10 +44,11 @@ describe('TransferServiceService', () => {
     
     const blob = new Blob([bytes], { type: 'application/gzip' });
     const file = new File([blob], 'test.json.gz', { type: 'application/gzip' });
-    
-    const imported = await service.importEngine(file);
+      const imported = await service.importEngine(file);
 
-    expect(imported.name).toEqual(engine.name);
-    expect(imported.id).not.toEqual(engine.id);
+    expect(imported).toBeInstanceOf(Array);
+    expect(imported.length).toBe(1);
+    expect(imported[0].name).toEqual(engine.name);
+    expect(imported[0].id).not.toEqual(engine.id);
   });
 });
