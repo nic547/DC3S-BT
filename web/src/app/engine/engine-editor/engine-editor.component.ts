@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from 
 import { StateService } from '../../services/state-service/state.service';
 import { DccFunction, PersistenEngine } from '../types';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { DataService } from '../../services/data-service/data.service';
 import { AddIconDirective } from '../../ui/add-icon.directive';
 import { RemoveIconDirective } from '../../ui/remove-icon.directive';
@@ -10,7 +10,7 @@ import { CloseIconDirective } from '../../ui/close-icon.directive';
 
 @Component({
   selector: 'app-engine-editor',
-  imports: [FormsModule, CommonModule, AddIconDirective, RemoveIconDirective, CloseIconDirective],
+  imports: [FormsModule, AddIconDirective, RemoveIconDirective, CloseIconDirective],
   templateUrl: './engine-editor.component.html',
   styleUrl: './engine-editor.component.css'
 })

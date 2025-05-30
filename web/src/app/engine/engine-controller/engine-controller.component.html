@@ -2,19 +2,21 @@
   <div id="address">
 
     @if (isSimpleEngine()) {
-    <div class="input">
-      <label>DCC Address</label>
-      <input [(ngModel)]="engine().address" type="number" placeholder="" min="1" max="10239" />
-    </div>
+      <div class="input">
+        <label>DCC Address</label>
+        <input [(ngModel)]="engine().address" type="number" placeholder="" min="1" max="10239" />
+      </div>
     } @else {
-    <div>
-      <h3 class="small">{{persistentEngine().name}}</h3>
-    </div>
+      <div>
+        <h3 class="small">{{persistentEngine().name}}</h3>
+      </div>
     }
 
     <div class="align-right align-top">
-      <button *ngIf="!isSimpleEngine()" (click)="editEngine()"  appEditIcon>
-      </button>
+      @if (!isSimpleEngine()) {
+        <button (click)="editEngine()"  appEditIcon>
+        </button>
+      }
       <button (click)="deactivateEngine()" appCloseIcon>
       </button>
     </div>
@@ -26,7 +28,9 @@
   <button id="emergency" disabled="true">E-Stop</button>
 
   <div id="functions" [class.wide]="wideFunctions()" class="scroll">
-    <button *ngFor="let f of engine().functions" (click)="toggleFunction(f.number)" class="small"
+    @for (f of engine().functions; track f) {
+      <button (click)="toggleFunction(f.number)" class="small"
       [class.secondary]="!f.isActive">{{f.displayName}}</button>
+    }
   </div>
 </article>

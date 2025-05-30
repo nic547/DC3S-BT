@@ -16,20 +16,22 @@
     <label>Descending</label>
   </div>
   <div class="selectionGrid">
-    <article *ngFor="let engine of engines()">
-      <h3 class="small border">{{engine.name}}</h3>
-      <p>
-        @for(tag of engine.tags; track tag) {
-        <button class="small secondary" (click)="setSearchTerm(tag)">{{tag}}</button>
-        }
-      </p>
-      <nav>
-        <button class="secondary" appDeleteIcon (click)="deleteEngine(engine)"></button>
-        <button class="secondary" appDownloadIcon (click)="exportEngine(engine)"></button>
-        <button class="secondary" appEditIcon (click)="editEngine(engine)"></button>
-        <button (click)="select(engine)">Select</button>
-      </nav>
-    </article>
+    @for (engine of engines(); track engine) {
+      <article>
+        <h3 class="small border">{{engine.name}}</h3>
+        <p>
+          @for(tag of engine.tags; track tag) {
+            <button class="small secondary" (click)="setSearchTerm(tag)">{{tag}}</button>
+          }
+        </p>
+        <nav>
+          <button class="secondary" appDeleteIcon (click)="deleteEngine(engine)"></button>
+          <button class="secondary" appDownloadIcon (click)="exportEngine(engine)"></button>
+          <button class="secondary" appEditIcon (click)="editEngine(engine)"></button>
+          <button (click)="select(engine)">Select</button>
+        </nav>
+      </article>
+    }
   </div>
   <nav>
     <button class="secondary" (click)="exportAllEngines()">Export all</button>

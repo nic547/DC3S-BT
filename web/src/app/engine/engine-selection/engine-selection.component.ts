@@ -2,14 +2,14 @@ import { AfterViewInit, Component, computed, ElementRef, inject, input, model, O
 import { StateService } from '../../services/state-service/state.service';
 import { Engine, PersistenEngine as PersistentEngine } from '../types';
 import { DataService } from '../../services/data-service/data.service';
-import { CommonModule } from '@angular/common';
+
 import { IconModule } from '../../ui/icon.module';
 import { TransferService } from '../../services/transfer-service/transfer.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-engine-selection',
-  imports: [CommonModule, FormsModule, IconModule],
+  imports: [FormsModule, IconModule],
   templateUrl: './engine-selection.component.html',
   styleUrl: './engine-selection.component.css'
 })

@@ -1,6 +1,6 @@
 import { Component, computed, ElementRef, inject, input, OnInit, signal, ViewChild, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import BLEServiceToken from '../../services/ble-service/ble.interface';
 import { Engine, PersistenEngine as PersistentEngine, SimpleEngine } from '../types';
 import { StateService } from '../../services/state-service/state.service';
@@ -12,7 +12,7 @@ import { DataService } from '../../services/data-service/data.service';
 
 @Component({
   selector: 'app-engine-controller',
-  imports: [FormsModule, CommonModule, CloseIconDirective, EditIconDirective, ArrowForwardIconDirective, ArrowBackIconDirective],
+  imports: [FormsModule, CloseIconDirective, EditIconDirective, ArrowForwardIconDirective, ArrowBackIconDirective],
   templateUrl: './engine-controller.component.html',
   styleUrl: './engine-controller.component.css'
 })
