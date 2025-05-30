@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { EngineEditorComponent } from './engine-editor.component';
 
 describe('EngineEditorComponent', () => {
@@ -9,7 +9,7 @@ describe('EngineEditorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EngineEditorComponent],
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 

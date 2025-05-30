@@ -23,8 +23,8 @@ export class EngineSelectionComponent implements AfterViewInit {
   private transferService = inject(TransferService)
 
   protected engines: WritableResource<PersistentEngine[]> = resource({
-    params: () => ({searchTerm: this.searchTerm(), sortKey: this.sortKey(), desc: this.desc()}),
-    loader: async ({params}) => {
+    params: () => ({ searchTerm: this.searchTerm(), sortKey: this.sortKey(), desc: this.desc() }),
+    loader: async ({ params }) => {
       return await this.dataService.getEngines(params.searchTerm, params.sortKey, params.desc);
     },
     defaultValue: [],
@@ -33,6 +33,8 @@ export class EngineSelectionComponent implements AfterViewInit {
   protected searchTerm = signal<string>('')
   protected sortKey = signal<'lastUsed' | 'name' | 'created' | 'address'>('lastUsed')
   protected desc = signal<boolean>(true)
+
+  protected showFallbackFileSelector = signal(false);
 
   @ViewChild('selectionDialog') engineSelectionDialog: ElementRef<HTMLDialogElement> | null = null
 
@@ -56,6 +58,7 @@ export class EngineSelectionComponent implements AfterViewInit {
 
   public async deleteEngine(engine: PersistentEngine) {
     await this.dataService.deleteEngine(engine);
+    this.engines.reload();
   }
 
   public async editEngine(engine: PersistentEngine) {
@@ -84,7 +87,7 @@ export class EngineSelectionComponent implements AfterViewInit {
 
     var element = document.createElement('a');
     element.setAttribute('href', 'data:application/gzip;base64,' + text);
-    element.setAttribute('download','dc3s_engines.json.gz');
+    element.setAttribute('download', 'dc3s_engines.json.gz');
 
     element.style.display = 'none';
     document.body.appendChild(element);
@@ -127,19 +130,33 @@ export class EngineSelectionComponent implements AfterViewInit {
       if (fileHandlers.length > 0) {
         const fileHandler = fileHandlers[0];
         const file = await fileHandler.getFile();
-          // Use the transfer service to decompress and parse the file
+        // Use the transfer service to decompress and parse the file
         const importedEngines = await this.transferService.importEngine(file);
-        
-        // Save all imported engines
+
         for (const engine of importedEngines) {
           await this.dataService.addOrUpdateEngine(engine);
         }
-        
+
       }
     } catch (error) {
-      console.error('Error importing engine:', error);
-      // You might want to add some user-facing error handling here
+      this.showFallbackFileSelector.set(true);
     }
     this.engines.reload();
+  }
+
+  async FallbackFileInputChanged(event: Event) {
+    const input = event?.target as HTMLInputElement;
+    const importedEngines = input.files?.[0] && await this.transferService.importEngine(input.files[0])
+
+    for (const engine of importedEngines ?? []) {
+      await this.dataService.addOrUpdateEngine(engine);
+    }
+
+    this.engines.reload();
+    this.showFallbackFileSelector.set(false);
+  }
+
+  closeFallbackFileSelector() {
+    this.showFallbackFileSelector.set(false);
   }
 }

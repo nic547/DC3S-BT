@@ -35,7 +35,7 @@ body {
     overscroll-behavior-y: contain;
 }
 
-button {
+button, input::file-selector-button {
     background-color: var(--color-primary);
     border-radius: 0.25rem;
     border: 1px solid var(--color-primary);
