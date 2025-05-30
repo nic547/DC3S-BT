@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, ElementRef, inject, input, model, OnInit, Resource, Signal, signal, ViewChild, resource, linkedSignal } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, input, model, OnInit, Resource, Signal, signal, ViewChild, resource, linkedSignal, WritableResource } from '@angular/core';
 import { StateService } from '../../services/state-service/state.service';
 import { Engine, PersistenEngine as PersistentEngine } from '../types';
 import { DataService } from '../../services/data-service/data.service';
@@ -22,26 +22,13 @@ export class EngineSelectionComponent implements AfterViewInit {
   private dataService = inject(DataService)
   private transferService = inject(TransferService)
 
-  protected enginesResource: Resource<PersistentEngine[] | undefined> = resource({
-    request: () => ({searchTerm: this.searchTerm(), sortKey: this.sortKey(), desc: this.desc()}),
-    loader: async ({request}) => {
-      return await this.dataService.getEngines(request.searchTerm, request.sortKey, request.desc);
-    }
+  protected engines: WritableResource<PersistentEngine[]> = resource({
+    params: () => ({searchTerm: this.searchTerm(), sortKey: this.sortKey(), desc: this.desc()}),
+    loader: async ({params}) => {
+      return await this.dataService.getEngines(params.searchTerm, params.sortKey, params.desc);
+    },
+    defaultValue: [],
   })
-
-  private previousEngines: PersistentEngine[] = []
-
-  // Workaround for the fact that the enginesResource is undefined while reloading
-  // https://github.com/angular/angular/issues/58602
-  // TODO: Remove this when the previous value is available, set empty array as default value intstead
-  protected engines: Signal<PersistentEngine[]> = computed(() => {
-    
-    if (this.enginesResource.hasValue()) {
-      this.previousEngines = this.enginesResource.value();
-    }
-    return this.previousEngines
-
-    });
 
   protected searchTerm = signal<string>('')
   protected sortKey = signal<'lastUsed' | 'name' | 'created' | 'address'>('lastUsed')
@@ -69,8 +56,6 @@ export class EngineSelectionComponent implements AfterViewInit {
 
   public async deleteEngine(engine: PersistentEngine) {
     await this.dataService.deleteEngine(engine);
-    this.enginesResource.reload();
-
   }
 
   public async editEngine(engine: PersistentEngine) {
@@ -111,12 +96,10 @@ export class EngineSelectionComponent implements AfterViewInit {
 
   public async setSearchTerm(searchTerm: string) {
     this.searchTerm.set(searchTerm);
-    this.enginesResource.reload();
   }
 
   public clearSearchTerm() {
     this.searchTerm.set('');
-    this.enginesResource.reload();
   }
 
 
@@ -157,6 +140,6 @@ export class EngineSelectionComponent implements AfterViewInit {
       console.error('Error importing engine:', error);
       // You might want to add some user-facing error handling here
     }
-    this.enginesResource.reload();
+    this.engines.reload();
   }
 }

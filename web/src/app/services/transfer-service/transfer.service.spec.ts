@@ -2,14 +2,14 @@ import { TestBed } from '@angular/core/testing';
 
 import { TransferService as TransferSerive } from './transfer.service';
 import { PersistenEngine } from '../../engine/types';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('TransferServiceService', () => {
   let service: TransferSerive;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()]
     });
     service = TestBed.inject(TransferSerive);
   });

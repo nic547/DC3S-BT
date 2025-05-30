@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EngineRootComponent } from './engine-root.component';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('LocoContainerComponent', () => {
   let component: EngineRootComponent;
@@ -10,7 +10,7 @@ describe('LocoContainerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EngineRootComponent],
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     })
     .compileComponents();
 

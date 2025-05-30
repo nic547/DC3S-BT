@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { DataService } from './data.service';
 import { DccFunction, PersistenEngine } from '../../engine/types';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('DataService', () => {
   let service: DataService;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     });
     service = TestBed.inject(DataService);
     
