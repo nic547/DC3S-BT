@@ -1,19 +1,16 @@
-
 export abstract class Engine {
-    address: number = 3;
+    address = 3;
     functions: DccFunction[] = [];
-    isForwards: boolean = true;
-    speed: number = 0;
-
+    isForwards = true;
+    speed = 0;
 }
 
-export class SimpleEngine extends Engine {
-}
+export class SimpleEngine extends Engine {}
 
 export class PersistenEngine extends Engine {
     id: string = crypto.randomUUID();
-    public name: string = '';
-    public notes: string = '';
+    public name = '';
+    public notes = '';
     public tags: string[] = [];
     public created: Date = new Date();
     public lastModified: Date = new Date();
@@ -24,22 +21,25 @@ export class PersistenEngine extends Engine {
         this.notes = updatedEngine.notes;
         this.tags = updatedEngine.tags;
         this.address = updatedEngine.address;
-        this.functions = updatedEngine.functions.map(f => { return Object.assign(new DccFunction(), f); }); // ensure functions are instances of DccFunction
+        this.functions = updatedEngine.functions.map((f) => {
+            return Object.assign(new DccFunction(), f);
+        }); // ensure functions are instances of DccFunction
     }
 }
 
 export class DccFunction {
-    
     static create(number: number) {
-        let f = new DccFunction();
+        const f = new DccFunction();
         f.number = number;
         return f;
     }
 
-    number: number = 0;
-    description: string = '';
-    duration: number = 0;
-    isActive: boolean = false;
+    number = 0;
+    description = '';
+    duration = 0;
+    isActive = false;
 
-    get displayName() {return this.description ? `F${this.number} - ${this.description}` : `F${this.number}`;}
+    get displayName() {
+        return this.description ? `F${this.number} - ${this.description}` : `F${this.number}`;
+    }
 }
