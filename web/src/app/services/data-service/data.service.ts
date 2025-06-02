@@ -8,8 +8,6 @@ import { DccFunction, PersistenEngine } from '../../engine/types';
 export class DataService {
     private db: IDBPDatabase<DC3SDB> | undefined;
 
-    constructor() {}
-
     // Mostly for the tests - somehow doesn't work reliably when not an arrow function
     setup = async (dbName = 'dc3s-db'): Promise<void> => {
         this.db = await openDB<DC3SDB>(dbName, 1, {
@@ -70,11 +68,13 @@ export class DataService {
         // Copy only the valid properties
         for (const key of Object.keys(engine)) {
             if (validKeys.includes(key)) {
+                // biome-ignore lint/suspicious/noExplicitAny: weird type stuff is done here
                 (instance as any)[key] = (engine as any)[key];
             }
         }
 
         //Deal with functions
+        // biome-ignore lint/suspicious/noExplicitAny: weird type stuff is done here
         instance.functions = engine.functions.map((f: any) => {
             return Object.assign(new DccFunction(), f);
         });

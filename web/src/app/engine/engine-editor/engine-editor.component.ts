@@ -4,13 +4,11 @@ import { StateService } from '../../services/state-service/state.service';
 import { DccFunction, PersistenEngine } from '../types';
 
 import { DataService } from '../../services/data-service/data.service';
-import { AddIconDirective } from '../../ui/add-icon.directive';
-import { CloseIconDirective } from '../../ui/close-icon.directive';
-import { RemoveIconDirective } from '../../ui/remove-icon.directive';
+import { IconModule } from '../../ui/icon.module';
 
 @Component({
     selector: 'app-engine-editor',
-    imports: [FormsModule, AddIconDirective, RemoveIconDirective, CloseIconDirective],
+    imports: [FormsModule, IconModule],
     templateUrl: './engine-editor.component.html',
     styleUrl: './engine-editor.component.css',
 })
@@ -18,11 +16,11 @@ export class EngineEditorComponent implements OnInit, AfterViewInit {
     private stateService = inject(StateService);
     private dataService = inject(DataService);
 
-    protected engine: PersistenEngine = new PersistenEngine(); //Placeholder to not screw around with null/undefined
+    public engine: PersistenEngine = new PersistenEngine(); //Placeholder to not screw around with null/undefined
 
-    protected tagInput = '';
+    public tagInput = '';
 
-    protected numberOfFunctions = 0;
+    public numberOfFunctions = 0;
 
     @ViewChild('engineEditor') engineEditorDialog: ElementRef<HTMLDialogElement> | null = null;
 

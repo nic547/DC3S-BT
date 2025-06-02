@@ -4,8 +4,6 @@ import type { Engine, PersistenEngine } from '../../engine/types';
     providedIn: 'root',
 })
 export class StateService {
-    constructor() {}
-
     private activeEnginesSignal: WritableSignal<Engine[]> = signal([]);
     get activeEngines() {
         return this.activeEnginesSignal.asReadonly();

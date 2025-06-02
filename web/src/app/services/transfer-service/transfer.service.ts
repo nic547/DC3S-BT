@@ -5,8 +5,6 @@ import { PersistenEngine } from '../../engine/types';
     providedIn: 'root',
 })
 export class TransferService {
-    constructor() {}
-
     public async exportEngine(engine: PersistenEngine): Promise<string> {
         const json = JSON.stringify([engine]);
         return await this.compressString(json);

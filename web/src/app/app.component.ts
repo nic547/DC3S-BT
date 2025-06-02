@@ -2,10 +2,10 @@ import { Component, type OnInit } from '@angular/core';
 import { inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BLESetupComponent } from './ble-setup/ble-setup.component';
-import BLEServiceToken, { IBLEService } from './services/ble-service/ble.interface';
+import { BLEServiceToken } from './services/ble-service/ble.interface';
 
 import { EngineRootComponent } from './engine/engine-root.component';
-import { BLEServiceFactory } from './services/ble-service/ble.service.factory';
+import { BLEService } from './services/ble-service/ble.service';
 import { DataService } from './services/data-service/data.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { DataService } from './services/data-service/data.service';
     imports: [RouterOutlet, BLESetupComponent, EngineRootComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    providers: [{ provide: BLEServiceToken, useFactory: BLEServiceFactory.create }],
+    providers: [{ provide: BLEServiceToken, useFactory: BLEService.create }],
 })
 export class AppComponent implements OnInit {
     title = 'web';

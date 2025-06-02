@@ -14,4 +14,4 @@ export interface IBLEService {
 }
 
 const BLEServiceToken = new InjectionToken<IBLEService>('IBLEService');
-export default BLEServiceToken;
+export { BLEServiceToken };

@@ -7,8 +7,6 @@ import type { IBLEService } from './ble.interface';
     providedIn: 'root',
 })
 export class BleFakeService implements IBLEService {
-    constructor() {}
-
     isLoading = signal(false);
     isReady = signal(false);
     isAvailable = signal(true);

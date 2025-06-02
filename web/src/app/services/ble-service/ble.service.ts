@@ -1,6 +1,7 @@
 /// <reference types="web-bluetooth" />
 
 import { Injectable, type WritableSignal, signal } from '@angular/core';
+import { BleFakeService } from './ble-fake.service';
 import type { IBLEService } from './ble.interface';
 
 @Injectable({
@@ -19,6 +20,15 @@ export class BLEService implements IBLEService {
             this.errorMessage.set('Bluetooth is not available on this device/browser');
             return;
         }
+    }
+
+    static create(): IBLEService {
+        const params = new URLSearchParams(document.location.search);
+        const useFakeBle = params.get('fakeBle');
+        if (useFakeBle === 'true') {
+            return new BleFakeService();
+        }
+        return new BLEService();
     }
 
     isLoading = signal(false);
@@ -47,8 +57,8 @@ export class BLEService implements IBLEService {
                 throw new Error('No GATT server found');
             }
             await this.loadCharacteristics(server);
-        } catch (error: any) {
-            this.errorMessage.set(error?.message ?? 'An unknown error occurred');
+        } catch (error: unknown) {
+            this.errorMessage.set(error instanceof Error ? error.message : 'An unknown error occurred');
             console.error(error);
             this.isLoading.set(false);
             return;
@@ -59,9 +69,9 @@ export class BLEService implements IBLEService {
     }
 
     private commandQueue: Promise<void> = Promise.resolve();
-    private pendingCommands: Map<string, { args: any[]; execute: () => Promise<void> }> = new Map();
+    private pendingCommands: Map<string, { args: unknown[]; execute: () => Promise<void> }> = new Map();
 
-    private enqueueCommand(key: string, args: any[], execute: () => Promise<void>): Promise<void> {
+    private enqueueCommand(key: string, args: unknown[], execute: () => Promise<void>): Promise<void> {
         // Check if a command with the same key is already pending
         if (this.pendingCommands.has(key)) {
             // Replace the pending command with the latest one

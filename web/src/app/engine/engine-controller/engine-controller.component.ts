@@ -1,18 +1,19 @@
 import { Component, type ElementRef, type OnInit, ViewChild, computed, inject, input, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import BLEServiceToken from '../../services/ble-service/ble.interface';
+import { BLEServiceToken } from '../../services/ble-service/ble.interface';
 import { DataService } from '../../services/data-service/data.service';
 import { StateService } from '../../services/state-service/state.service';
 import { ArrowBackIconDirective } from '../../ui/arrow-back-icon.directive';
 import { ArrowForwardIconDirective } from '../../ui/arrow-forward-icon.directive';
 import { CloseIconDirective } from '../../ui/close-icon.directive';
 import { EditIconDirective } from '../../ui/edit-icon.directive';
+import { IconModule } from '../../ui/icon.module';
 import { type Engine, type PersistenEngine as PersistentEngine, SimpleEngine } from '../types';
 
 @Component({
     selector: 'app-engine-controller',
-    imports: [FormsModule, CloseIconDirective, EditIconDirective, ArrowForwardIconDirective, ArrowBackIconDirective],
+    imports: [FormsModule, IconModule],
     templateUrl: './engine-controller.component.html',
     styleUrl: './engine-controller.component.css',
 })
@@ -87,9 +88,11 @@ export class EngineControllerComponent implements OnInit {
 
     protected static onResize() {
         const clientWidth = window.innerWidth;
-        const engines = this.stateService?.activeEngines().length ?? 0;
+        const engines = EngineControllerComponent.stateService?.activeEngines().length ?? 0;
         let availableWidthPerElement = clientWidth / engines;
-        availableWidthPerElement > 600 ? this.wideFunctions.set(true) : this.wideFunctions.set(false);
+        availableWidthPerElement > 600
+            ? EngineControllerComponent.wideFunctions.set(true)
+            : EngineControllerComponent.wideFunctions.set(false);
 
         if (availableWidthPerElement > 800) {
             availableWidthPerElement = 800;

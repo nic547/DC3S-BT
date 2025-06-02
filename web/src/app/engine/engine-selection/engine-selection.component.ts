@@ -83,9 +83,9 @@ export class EngineSelectionComponent implements AfterViewInit {
     public async exportEngine(engine: PersistentEngine) {
         const text = await this.transferService.exportEngine(engine);
 
-        var element = document.createElement('a');
-        element.setAttribute('href', 'data:application/gzip;base64,' + text);
-        element.setAttribute('download', this.getSaveishName(engine.name) + '.json.gz');
+        const element = document.createElement('a');
+        element.setAttribute('href', `data:application/gzip;base64,${text}`);
+        element.setAttribute('download', `${this.getSaveishName(engine.name)}.json.gz`);
 
         element.style.display = 'none';
         document.body.appendChild(element);
@@ -99,8 +99,8 @@ export class EngineSelectionComponent implements AfterViewInit {
         const engines = await this.dataService.getEngines();
         const text = await this.transferService.exportEngines(engines);
 
-        var element = document.createElement('a');
-        element.setAttribute('href', 'data:application/gzip;base64,' + text);
+        const element = document.createElement('a');
+        element.setAttribute('href', `data:application/gzip;base64,${text}`);
         element.setAttribute('download', 'dc3s_engines.json.gz');
 
         element.style.display = 'none';
