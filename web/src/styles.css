@@ -1,14 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
     color-scheme: light dark;
-    --color-primary:        light-dark(oklch(0.707 0.165 254.624),  oklch(0.550 0.245 262.881)); /*blue-400 or blue-600 from tailwind */
-    --color-primary-alt:    light-dark(oklch(48.8% 0.243 264.376), oklch(80.9% 0.105 251.813)); /*blue-300 or blue-700 from tailwind */
+    --color-primary: light-dark(oklch(0.707 0.165 254.624), oklch(0.55 0.245 262.881)); /*blue-400 or blue-600 from tailwind */
+    --color-primary-alt: light-dark(oklch(48.8% 0.243 264.376), oklch(80.9% 0.105 251.813)); /*blue-300 or blue-700 from tailwind */
     /*--color-secondary:      light-dark(oklch(0.746 0.160 232.661),  oklch(0.588 0.158 241.966)); /* sky-400 or sky-600 */
-    --background-primary:   light-dark(oklch(0.967 0.001 286.375),  oklch(0.210 0.006 285.885)); /* zinc-100 or zinc-900 */
-    --background-secondary: light-dark(oklch(0.920 0.004 286.320),  oklch(0.274 0.006 286.033)); /* zinc-200 or zinc-800 */
-    --text-primary:         light-dark(oklch(0.210 0.006 285.885),  oklch(0.967 0.001 286.375));
-    --text-secondary:       light-dark(oklch(0.370 0.013 285.805),  oklch(0.871 0.006 286.286)); /* zinc-700 or zinc-300 */
-    --border-color:         light-dark(oklch(0.707 0.022 261.325),  oklch(0.446 0.030 256.802));
+    --background-primary: light-dark(oklch(0.967 0.001 286.375), oklch(0.21 0.006 285.885)); /* zinc-100 or zinc-900 */
+    --background-secondary: light-dark(oklch(0.92 0.004 286.32), oklch(0.274 0.006 286.033)); /* zinc-200 or zinc-800 */
+    --text-primary: light-dark(oklch(0.21 0.006 285.885), oklch(0.967 0.001 286.375));
+    --text-secondary: light-dark(oklch(0.37 0.013 285.805), oklch(0.871 0.006 286.286)); /* zinc-700 or zinc-300 */
+    --border-color: light-dark(oklch(0.707 0.022 261.325), oklch(0.446 0.03 256.802));
 
     --color-error-background: light-dark(oklch(88.5% 0.062 18.334), oklch(44.4% 0.177 26.899)); /* red-200 or red-800 */
 
@@ -25,7 +25,14 @@
     box-sizing: border-box;
 }
 
-label, h1, h2, h3, h4, h5, h6, button {
+label,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button {
     user-select: none;
 }
 
@@ -35,7 +42,8 @@ body {
     overscroll-behavior-y: contain;
 }
 
-button, input::file-selector-button {
+button,
+input::file-selector-button {
     background-color: var(--color-primary);
     border-radius: 0.25rem;
     border: 1px solid var(--color-primary);
@@ -68,11 +76,11 @@ button.svg-behind {
 
 button.svg > svg {
     display: block; /* Somehow the icons buttons aren't square otherwise */
-    color: (var(--text-primary))
+    color: var(--text-primary);
 }
 
 button.small {
-    padding:  calc(var(--padding) / 2);
+    padding: calc(var(--padding) / 2);
 }
 
 button.secondary {
@@ -106,7 +114,7 @@ article {
 
     &.error {
         background-color: var(--color-error-background);
-        border: 1px  solid var(--color-error-background);
+        border: 1px solid var(--color-error-background);
         padding: var(--padding);
     }
 }
@@ -118,12 +126,11 @@ article {
     flex-direction: row;
 }
 
-
 div.input {
-
     position: relative;
 
-    & > input, & > textarea {
+    & > input,
+    & > textarea {
         font-size: 1rem;
         border: none;
         border-bottom: 2px solid var(--border-color);
@@ -135,7 +142,10 @@ div.input {
         width: calc(100%);
     }
 
-    & > input:focus, & > input:focus-visible, & > textarea:focus, & > textarea:focus-visible {
+    & > input:focus,
+    & > input:focus-visible,
+    & > textarea:focus,
+    & > textarea:focus-visible {
         outline: none;
         border: none;
         border-bottom: 2px solid var(--color-primary-alt);
@@ -170,7 +180,6 @@ input[type="checkbox"] {
     border: 1px solid var(--border-color);
     margin: var(--small-padding);
     padding: var(--small-padding);
-    
 }
 
 input[type="checkbox"]:checked {

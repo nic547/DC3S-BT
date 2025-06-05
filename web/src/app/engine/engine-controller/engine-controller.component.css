@@ -10,10 +10,10 @@
     grid-template-columns: 1fr 1fr;
 }
 
-
 #loco-grid {
     display: grid;
-    grid-template-areas: "name name name"
+    grid-template-areas:
+        "name name name"
         "speed speed functions"
         "display display functions"
         "backwards forwards functions"
@@ -63,7 +63,7 @@
         border-radius: 1em;
     }
 
-   &::-webkit-slider-thumb {
+    &::-webkit-slider-thumb {
         height: 2em;
         width: 2em;
         border-radius: 50%;
@@ -73,7 +73,6 @@
         transform: translateX(-25%);
     }
 }
-
 
 #speed-display {
     grid-area: display;
@@ -97,6 +96,6 @@
     grid-area: emergency;
 }
 
-#editclosediv>button {
+#editclosediv > button {
     margin-right: 0px;
 }
