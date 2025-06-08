@@ -4,10 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { BLEServiceToken } from '../../services/ble-service/ble.interface';
 import { DataService } from '../../services/data-service/data.service';
 import { StateService } from '../../services/state-service/state.service';
-import { ArrowBackIconDirective } from '../../ui/arrow-back-icon.directive';
-import { ArrowForwardIconDirective } from '../../ui/arrow-forward-icon.directive';
-import { CloseIconDirective } from '../../ui/close-icon.directive';
-import { EditIconDirective } from '../../ui/edit-icon.directive';
 import { IconModule } from '../../ui/icon.module';
 import { type Engine, type PersistenEngine as PersistentEngine, SimpleEngine } from '../types';
 

@@ -1,7 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { BleFakeService } from '../services/ble-service/ble-fake.service';
-import BLEServiceToken from '../services/ble-service/ble.interface';
+import { BLEServiceToken } from '../services/ble-service/ble.interface';
 import { BLESetupComponent } from './ble-setup.component';
 
 describe('BLESetupComponent', () => {
