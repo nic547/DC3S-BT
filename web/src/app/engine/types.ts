@@ -15,6 +15,7 @@ export class PersistenEngine extends Engine {
     public created: Date = new Date();
     public lastModified: Date = new Date();
     public lastUsed: Date = new Date();
+    public lastActiveSession: string | null = null;
 
     updateWith(updatedEngine: PersistenEngine) {
         this.name = updatedEngine.name;

@@ -4,6 +4,7 @@ import type { Engine, PersistenEngine } from '../../engine/types';
     providedIn: 'root',
 })
 export class StateService {
+
     private activeEnginesSignal: WritableSignal<Engine[]> = signal([]);
     get activeEngines() {
         return this.activeEnginesSignal.asReadonly();
@@ -12,6 +13,11 @@ export class StateService {
     public editingEngine: WritableSignal<PersistenEngine | null> = signal(null);
 
     public activateEngine(engine: Engine): void {
+        if (this.activeEnginesSignal().includes(engine)) {
+            console.warn('Engine is already active:', engine);
+            return;
+        }
+
         this.activeEnginesSignal.update((v) => [...v, engine]);
     }
 

@@ -3,6 +3,9 @@
 import { Injectable, type WritableSignal, signal } from '@angular/core';
 import { BleFakeService } from './ble-fake.service';
 import type { IBLEService } from './ble.interface';
+import { Session } from './ble.types';
+
+const sessionStorageKey = 'ble-session';
 
 @Injectable({
     providedIn: 'root',
@@ -35,7 +38,10 @@ export class BLEService implements IBLEService {
     isReady = signal(false);
     isAvailable = signal(true);
     errorMessage: WritableSignal<null | string> = signal(null);
+    sessionUuid = signal<string | null>(null);
     IsFake = false;
+
+    private session: BluetoothRemoteGATTCharacteristic | null = null;
 
     private functionCommand: BluetoothRemoteGATTCharacteristic | null = null;
     private Speed128Command: BluetoothRemoteGATTCharacteristic | null = null;
@@ -57,6 +63,10 @@ export class BLEService implements IBLEService {
                 throw new Error('No GATT server found');
             }
             await this.loadCharacteristics(server);
+
+            await this.checkSessions();
+
+
         } catch (error: unknown) {
             this.errorMessage.set(error instanceof Error ? error.message : 'An unknown error occurred');
             console.error(error);
@@ -132,8 +142,33 @@ export class BLEService implements IBLEService {
     private async loadCharacteristics(server: BluetoothRemoteGATTServer) {
         const mainService = await server.getPrimaryService('789624c2-214b-4730-b53d-fe5aa3143250');
         const locoService = await server.getPrimaryService('6d3fe63e-4083-483a-ab0c-36113ecb859f');
+
+        this.session = await mainService.getCharacteristic('8dbc05a5-a6f8-4ae0-a480-2fd036160769');
+
         this.functionCommand = await locoService.getCharacteristic('4d550020-9408-4c08-a9c0-904ead62a642');
         this.Speed128Command = await locoService.getCharacteristic('a829de9a-6dff-4500-ad7b-90889ef346c0');
         console.log(await this.functionCommand.readValue());
+    }
+
+    /** Checks wheter the command station and client application are likely to have the same state (Command station hasn't restarted and
+     * the instance of the client application is the same as the one that started the session).
+     */
+    private async checkSessions() {
+        let localSessionUuid = localStorage.getItem(sessionStorageKey);
+        const remoteSessionResponse = await this.session?.readValue();
+        const remoteSessionUuid = Session.FromBuffer(remoteSessionResponse?.buffer || new ArrayBuffer(0));
+
+        if (localSessionUuid?.toString() === remoteSessionUuid.toString()) {
+            console.log('Current local session matches remote session');
+        }
+        else {
+            console.log('Current local session does not match remote session');
+            const newSession = new Session();
+            localSessionUuid = newSession.toString();
+            localStorage.setItem(sessionStorageKey, localSessionUuid);
+            this.session?.writeValue(newSession.data.buffer);
+        }
+
+        this.sessionUuid.set(localSessionUuid);
     }
 }

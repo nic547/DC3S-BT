@@ -1,6 +1,6 @@
 /// <reference types="web-bluetooth" />
 
-import { Injectable, type WritableSignal, signal } from '@angular/core';
+import { Injectable, Signal, type WritableSignal, signal } from '@angular/core';
 import type { IBLEService } from './ble.interface';
 
 @Injectable({
@@ -11,6 +11,7 @@ export class BleFakeService implements IBLEService {
     isReady = signal(false);
     isAvailable = signal(true);
     errorMessage: WritableSignal<null | string> = signal(null);
+    sessionUuid = signal(null);
     IsFake = true;
 
     async setup() {

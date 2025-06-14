@@ -1,11 +1,11 @@
-import { Component, type ElementRef, type OnInit, ViewChild, computed, inject, input, signal, viewChild } from '@angular/core';
+import { type AfterContentInit, Component, type ElementRef, type OnInit, ViewChild, computed, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { BLEServiceToken } from '../../services/ble-service/ble.interface';
 import { DataService } from '../../services/data-service/data.service';
 import { StateService } from '../../services/state-service/state.service';
 import { IconModule } from '../../ui/icon.module';
-import { type Engine, type PersistenEngine as PersistentEngine, SimpleEngine } from '../types';
+import { type Engine, PersistenEngine as PersistentEngine, SimpleEngine } from '../types';
 
 @Component({
     selector: 'app-engine-controller',
@@ -13,7 +13,7 @@ import { type Engine, type PersistenEngine as PersistentEngine, SimpleEngine } f
     templateUrl: './engine-controller.component.html',
     styleUrl: './engine-controller.component.css',
 })
-export class EngineControllerComponent implements OnInit {
+export class EngineControllerComponent implements OnInit, AfterContentInit {
     @ViewChild('speedSlider') speedSlider: ElementRef<HTMLInputElement> | undefined;
     private ble = inject(BLEServiceToken);
     private data = inject(DataService);
@@ -31,6 +31,12 @@ export class EngineControllerComponent implements OnInit {
     ngOnInit(): void {
         EngineControllerComponent.stateService = this.stateService;
         EngineControllerComponent.onResize();
+    }
+
+    ngAfterContentInit(): void {
+        this.resetStateIfRequired();
+        // relies on the slider existing to set the initial gradient
+        this.updateSliderGradient();
     }
 
     async toggleFunction(number: number) {
@@ -99,5 +105,19 @@ export class EngineControllerComponent implements OnInit {
         }
 
         document.documentElement.style.setProperty('--engine-controller-width', `${availableWidthPerElement}px`);
+    }
+
+    protected resetStateIfRequired() {
+        const engine = this.engine();
+
+        if (engine instanceof PersistentEngine && ( this.ble.sessionUuid() !== engine.lastActiveSession || engine.lastActiveSession === null)) {
+            engine.speed = 0;
+            engine.isForwards = true;
+            engine.lastActiveSession = this.ble.sessionUuid();
+            for (const f of engine.functions) {
+                f.isActive = false;
+            }
+            this.data.addOrUpdateEngine(engine);
+        }
     }
 }

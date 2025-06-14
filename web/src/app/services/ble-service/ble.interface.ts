@@ -9,6 +9,7 @@ export interface IBLEService {
     isReady: Signal<boolean>;
     isAvailable: Signal<boolean>;
     errorMessage: Signal<null | string>;
+    sessionUuid: Signal<string | null>;
 
     IsFake: boolean;
 }
