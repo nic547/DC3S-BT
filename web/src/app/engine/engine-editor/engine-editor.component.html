@@ -1,59 +1,63 @@
 <dialog #engineEditor (cancel)="cancel()" (close)="cancel()">
-    <h5>Edit Engine</h5>
-    <div>
-        <div class="input">
-            <label>Name</label>
-            <input [(ngModel)]="engine.name" type="text" placeholder="" />
-        </div>
-        <div class="input">
-            <label>DCC Address</label>
-            <input [(ngModel)]="engine.address" type="number" placeholder="" min="1" max="10239" />
-        </div>
+  <h5>Edit Engine</h5>
+  <div>
+    <div class="input">
+      <label>Name</label>
+      <input [(ngModel)]="engine.name" type="text" placeholder="" />
     </div>
-    <div>
-        <fieldset>
-            <legend>Tags</legend>
-            <div id="tag-container">
-                <button appCloseIcon *ngFor="let tag of engine.tags" class="svg-behind" (click)="removeTag(tag)">
-                    <span>{{tag}}</span>
-                </button>
-            </div>
-            <div class="input">
-                <input [(ngModel)]="tagInput" type="text" placeholder="" (keydown)="handleTagInputKeypress($event)" />
-                <label>New Tag</label>
-            </div>
-            <button (click)="addTag()">Add</button>
-        </fieldset>
+    <div class="input">
+      <label>DCC Address</label>
+      <input [(ngModel)]="engine.address" type="number" placeholder="" min="1" max="10239" />
     </div>
+  </div>
+  <div>
     <fieldset>
-        <legend>Functions</legend>
-        <div class=function-number-container>
-            <div class="input">
-                <label>Functions</label>
-                <input [(ngModel)]="numberOfFunctions" type="number" min="0" max="69" step="1"
-                    (change)="handleFunctionNumberChange()" />
-            </div>
-            <button appAddIcon (click)="addFunction()" [disabled]="numberOfFunctions >= 69"></button>
-            <button appRemoveIcon (click)="removeFunction()" [disabled]="numberOfFunctions <= 0"></button>
+      <legend>Tags</legend>
+      <div id="tag-container">
+        @for (tag of engine.tags; track tag) {
+          <button appCloseIcon class="svg-behind" (click)="removeTag(tag)">
+            <span>{{tag}}</span>
+          </button>
+        }
+      </div>
+      <div class="input">
+        <input [(ngModel)]="tagInput" type="text" placeholder="" (keydown)="handleTagInputKeypress($event)" />
+        <label>New Tag</label>
+      </div>
+      <button (click)="addTag()">Add</button>
+    </fieldset>
+  </div>
+  <fieldset>
+    <legend>Functions</legend>
+    <div class=function-number-container>
+      <div class="input">
+        <label>Functions</label>
+        <input [(ngModel)]="numberOfFunctions" type="number" min="0" max="69" step="1"
+          (change)="handleFunctionNumberChange()" />
         </div>
-        <div *ngFor="let function of engine.functions" class="function-element">
-            <div class="input">
-                <label>F{{function.number}}</label>
-                <input [(ngModel)]="function.description" type="text" />
-            </div>
-            <div class="input">
-                <label>Duration (ms)</label>
-                <input [(ngModel)]="function.duration" type="number" min="0" max="5000" step="250" />
-            </div>
+        <button appAddIcon (click)="addFunction()" [disabled]="numberOfFunctions >= 69"></button>
+        <button appRemoveIcon (click)="removeFunction()" [disabled]="numberOfFunctions <= 0"></button>
+      </div>
+      @for (function of engine.functions; track function) {
+        <div class="function-element">
+          <div class="input">
+            <label>F{{function.number}}</label>
+            <input [(ngModel)]="function.description" type="text" />
+          </div>
+          <div class="input">
+            <label>Duration (ms)</label>
+            <input [(ngModel)]="function.duration" type="number" min="0" max="5000" step="250" />
+          </div>
         </div>
+      }
     </fieldset>
     <div class="input">
-        <label>Notes</label>
-        <textarea [(ngModel)]="engine.notes"></textarea>
+      <label>Notes</label>
+      <textarea [(ngModel)]="engine.notes"></textarea>
     </div>
 
     <nav class="align-right">
-        <button (click)="cancel()" class="secondary">Cancel</button>
-        <button (click)="save()">Save</button>
+      <button (click)="cancel()" class="secondary">Cancel</button>
+      <button (click)="save()">Save</button>
     </nav>
-</dialog>
+  </dialog>

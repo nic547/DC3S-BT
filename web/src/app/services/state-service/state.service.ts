@@ -1,24 +1,27 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
-import { Engine, PersistenEngine } from '../../engine/types';
+import { Injectable, type WritableSignal, signal } from '@angular/core';
+import type { Engine, PersistenEngine } from '../../engine/types';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class StateService {
 
-  constructor() { }
+    private activeEnginesSignal: WritableSignal<Engine[]> = signal([]);
+    get activeEngines() {
+        return this.activeEnginesSignal.asReadonly();
+    }
 
-  private activeEnginesSignal: WritableSignal<Engine[]> = signal([]);
-  get activeEngines() {
-    return this.activeEnginesSignal.asReadonly();
-  }
+    public editingEngine: WritableSignal<PersistenEngine | null> = signal(null);
 
-  public editingEngine: WritableSignal<PersistenEngine | null> = signal(null);
+    public activateEngine(engine: Engine): void {
+        if (this.activeEnginesSignal().includes(engine)) {
+            console.warn('Engine is already active:', engine);
+            return;
+        }
 
-  public activateEngine(engine: Engine): void {
-    this.activeEnginesSignal.update(v => [...v, engine]);
-  }
+        this.activeEnginesSignal.update((v) => [...v, engine]);
+    }
 
-  public deactivateEngine(engine: Engine): void {
-    this.activeEnginesSignal.update(v => v.filter(e => e !== engine));
-  }
+    public deactivateEngine(engine: Engine): void {
+        this.activeEnginesSignal.update((v) => v.filter((e) => e !== engine));
+    }
 }
