@@ -26,8 +26,23 @@ article {
     grid-template-columns: 1fr;
 }
 
+h3, p {
+    /* Browsers seem to go with 1em (~18px), 16px and similar values - approx half makes it a bit tighter */
+    margin-block-start: 0.5rem;
+    margin-block-end: 0.5rem;
+}
+
 nav {
     align-items: center;
     display: flex;
     justify-self: end;
+}
+
+.input {
+    width: 300px;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
 }

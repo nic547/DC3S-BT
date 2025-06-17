@@ -14,6 +14,7 @@ namespace main {
 BLEService service = BLEService("789624c2-214b-4730-b53d-fe5aa3143250");
 BLECharacteristic version = BLECharacteristic("53b477e7-20c2-446a-bffc-762edee4eb06", BLERead, sizeof(version::value), true);
 BLECharacteristic hash = BLECharacteristic("cc203f79-84e1-4d9b-9e06-f23211a16c5d", BLERead, sizeof(version::hash), true);
+BLECharacteristic session = BLECharacteristic("8dbc05a5-a6f8-4ae0-a480-2fd036160769", BLERead | BLEWrite, sizeof(Session), true);
 
 } // namespace main
 
@@ -31,12 +32,14 @@ void init() {
   BLE.begin();
   BLE.setLocalName("DC3S-BT");
   BLE.setDeviceName("DC3S-BT");
-  BLE.setConnectionInterval(0x0006, 0x0006); // that should equal 7.5ms, the minimal value - it seems to improve the latency, not what the default behavior is...
+  BLE.setConnectionInterval(0x0006, 0x0006); // that should equal 7.5ms, the minimal value - it seems to improve the latency, not sure what the default is...
 
   main::version.writeValue(reinterpret_cast<const uint8_t *>(version::value), sizeof(version::value));
   main::hash.writeValue(reinterpret_cast<const uint8_t *>(version::hash), sizeof(version::hash));
+  main::session.writeValue(Session(), sizeof(Session));
   main::service.addCharacteristic(main::version);
   main::service.addCharacteristic(main::hash);
+  main::service.addCharacteristic(main::session);
   BLE.addService(main::service);
 
   // Locomotive service

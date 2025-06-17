@@ -13,7 +13,7 @@
 #endif
 
 #ifndef VERSION_HASH
-#define VERSION_HASH "(none)"
+#define VERSION_HASH "none"
 #endif
 
 namespace version {
